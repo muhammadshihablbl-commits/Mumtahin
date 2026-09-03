@@ -1,4 +1,8 @@
-build/
+.androstudio/
+.kotlin/
 .gradle/
-local.properties
 .idea/
+build/
+.build_success
+*.txt
+local.properties
