@@ -1,0 +1,98 @@
+[
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/drawable-v24/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/drawable_ic_english.xml.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/drawable/ic_english.xml"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/drawable_ic_bangla.xml.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/drawable/ic_bangla.xml"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/drawable_ic_math.xml.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/drawable/ic_math.xml"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/drawable_ic_preview.xml.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/drawable/ic_preview.xml"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/drawable_ic_launcher_background.xml.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/drawable_ic_banner.xml.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/drawable/ic_banner.xml"
+    },
+    {
+        "merged": "com.mumtahin.app-debug-46:/drawable_ic_edit.xml.flat",
+        "source": "com.mumtahin.app-main-48:/drawable/ic_edit.xml"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/drawable_ic_edit.xml.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/drawable/ic_edit.xml"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/drawable_ic_delete.xml.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/drawable/ic_delete.xml"
+    },
+    {
+        "merged": "com.mumtahin.app-debug-46:/drawable_ic_delete.xml.flat",
+        "source": "com.mumtahin.app-main-48:/drawable/ic_delete.xml"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-debug-46:/drawable_ic_arabic.xml.flat",
+        "source": "/data/data/com.jahangir/files/home/.gradle/daemon/8.11/com.mumtahin.app-main-48:/drawable/ic_arabic.xml"
+    }
+]

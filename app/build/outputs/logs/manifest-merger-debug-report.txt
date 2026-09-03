@@ -1,0 +1,313 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:2:1-23:12
+INJECTED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:2:1-23:12
+INJECTED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:2:1-23:12
+INJECTED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:2:1-23:12
+MERGED from [androidx.compose.material3:material3-android:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/ae9e889b91545f25ec8d73221ad48c3d/transformed/material3-release/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.material:material-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/89b6cafe48b7912b5e0eacde867f88ac/transformed/material-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-ripple-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/b4a82feb3d61c3c569464e98f5be8245/transformed/material-ripple-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/cd7b4bc7de93785082200b4860fed3a7/transformed/foundation-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8f2b37a86faff1bd77dfd5cde1a2d09e/transformed/animation-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/e725f278d65e0fca1ef6d3bf43613e85/transformed/foundation-layout-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-core-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/505f1af47c16fa0b78d129a42af4106a/transformed/animation-core-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/315b322c55382b1db371d6b7e8023050/transformed/ui-tooling-data-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/24fffd89dee7fcba4b28b8b4ca5e78be/transformed/ui-unit-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/0eeb9c14371f2a92d9adb01c2a3be142/transformed/ui-geometry-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-util-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/526ab26c649680340bd3dac25371b845/transformed/ui-util-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-text-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/eea708d217bb9a78774226cab60b34e9/transformed/ui-text-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a5cb61137bb514f1b96db4d4e7238cc3/transformed/ui-tooling-preview-release/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8fd022701d7658c2c8af577b5f0a605d/transformed/ui-tooling-release/AndroidManifest.xml:17:1-28:12
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5cd687cb18fd217a6fbd2efacfbbf299/transformed/ui-graphics-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-test-manifest:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a60160e1ba0313b15d93fbc37b7af226/transformed/ui-test-manifest-1.7.6/AndroidManifest.xml:17:1-28:12
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/c58ef742da83c2a5964ff1e19b85155e/transformed/material-icons-core-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/028d5eecb9ad4c4b7b038e476572c1e6/transformed/ui-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity:1.9.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/60c8edf470ef0af04136582b3592d953/transformed/activity-1.9.3/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.activity:activity-ktx:1.9.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8fdffe6b562a7b9befc0bba4314dea16/transformed/activity-ktx-1.9.3/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity-compose:1.9.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/d61de8a08e064fbf7eeb7f73078b7f78/transformed/activity-compose-1.9.3/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.autofill:autofill:1.0.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a1f9b2d0421403ddc59df4e34d54d497/transformed/autofill-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.graphics:graphics-path:1.0.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/89d900861e27748526303c3826fa50d4/transformed/graphics-path-1.0.1/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.emoji2:emoji2:1.3.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f7e628dac3dc327eb4da95efb2139106/transformed/emoji2-1.3.0/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/2aaacc0a43d9a557d7674aa0dacbe193/transformed/customview-poolingcontainer-1.0.0/AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.core:core-ktx:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/bdf163e3e229f1c3163dfef039543718/transformed/core-ktx-1.13.1/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/e6dfa1f890feca1545b0167d96148eb2/transformed/lifecycle-livedata-core-2.8.3/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/0aca78b032fcd2c8dd4d6ea5d8d20979/transformed/lifecycle-viewmodel-release/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/d43bfd64f3b95fb8b29b407b3a0da2d3/transformed/lifecycle-process-2.8.3/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/4f28e12114b19cfa489f8010c7c8d515/transformed/lifecycle-runtime-ktx-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/1c4d0d132e3d25ccc20ce15d6c44ad3f/transformed/lifecycle-runtime-release/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/0e52ac5b0b4e9b397fadb81e909c5de9/transformed/lifecycle-viewmodel-ktx-2.8.3/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f742720e03a48b218492aa5ff65c8dde/transformed/lifecycle-runtime-compose-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a43a67cc230bde339675161706b6bd7f/transformed/lifecycle-viewmodel-savedstate-2.8.3/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.2.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/24710cf8baab865cd99d8479fa68c5ea/transformed/savedstate-1.2.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/340a3b887a1a39af8e57ea9c06bda2cb/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.runtime:runtime-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/10ad7c33b225390b9883abbcf8dc65f0/transformed/runtime-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8bc1d19b7f29310ea88b7878a5500ffa/transformed/runtime-saveable-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/2a3cce657f81f66291d2b10ee709357e/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/3fd435d181d8a3511f4eb6ad9c9cb26c/transformed/annotation-experimental-1.4.1/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f508638fa5115e241e7af5d39f4811f2/transformed/startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.0.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/53fbdbfac3c8b1c62f051e679b65b273/transformed/tracing-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f68a29b581aeee1345f0d42885c58f5e/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/16c2e391d60bf801504032276f3290aa/transformed/core-runtime-2.2.0/AndroidManifest.xml:17:1-22:12
+	package
+		INJECTED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:2:11-69
+application
+ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:4:5-21:19
+INJECTED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:4:5-21:19
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8fd022701d7658c2c8af577b5f0a605d/transformed/ui-tooling-release/AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8fd022701d7658c2c8af577b5f0a605d/transformed/ui-tooling-release/AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-test-manifest:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a60160e1ba0313b15d93fbc37b7af226/transformed/ui-test-manifest-1.7.6/AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.compose.ui:ui-test-manifest:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a60160e1ba0313b15d93fbc37b7af226/transformed/ui-test-manifest-1.7.6/AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f7e628dac3dc327eb4da95efb2139106/transformed/emoji2-1.3.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f7e628dac3dc327eb4da95efb2139106/transformed/emoji2-1.3.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/d43bfd64f3b95fb8b29b407b3a0da2d3/transformed/lifecycle-process-2.8.3/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/d43bfd64f3b95fb8b29b407b3a0da2d3/transformed/lifecycle-process-2.8.3/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/2a3cce657f81f66291d2b10ee709357e/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/2a3cce657f81f66291d2b10ee709357e/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f508638fa5115e241e7af5d39f4811f2/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f508638fa5115e241e7af5d39f4811f2/transformed/startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+	android:extractNativeLibs
+		INJECTED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+	android:supportsRtl
+		ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:8:9-35
+	android:label
+		ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:7:9-41
+	android:icon
+		ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:6:9-43
+	android:allowBackup
+		ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:5:9-35
+	android:theme
+		ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:9:9-46
+activity#com.mumtahin.MainActivity
+ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:11:9-19:20
+	android:exported
+		ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:13:13-36
+	android:theme
+		ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:14:13-50
+	android:name
+		ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:12:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:15:13-18:29
+action#android.intent.action.MAIN
+ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:16:17-69
+	android:name
+		ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:16:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:17:17-77
+	android:name
+		ADDED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml:17:27-74
+uses-sdk
+INJECTED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml
+INJECTED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml
+MERGED from [androidx.compose.material3:material3-android:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/ae9e889b91545f25ec8d73221ad48c3d/transformed/material3-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material3:material3-android:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/ae9e889b91545f25ec8d73221ad48c3d/transformed/material3-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material:material-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/89b6cafe48b7912b5e0eacde867f88ac/transformed/material-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/89b6cafe48b7912b5e0eacde867f88ac/transformed/material-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/b4a82feb3d61c3c569464e98f5be8245/transformed/material-ripple-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/b4a82feb3d61c3c569464e98f5be8245/transformed/material-ripple-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/cd7b4bc7de93785082200b4860fed3a7/transformed/foundation-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/cd7b4bc7de93785082200b4860fed3a7/transformed/foundation-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8f2b37a86faff1bd77dfd5cde1a2d09e/transformed/animation-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8f2b37a86faff1bd77dfd5cde1a2d09e/transformed/animation-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/e725f278d65e0fca1ef6d3bf43613e85/transformed/foundation-layout-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/e725f278d65e0fca1ef6d3bf43613e85/transformed/foundation-layout-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/505f1af47c16fa0b78d129a42af4106a/transformed/animation-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/505f1af47c16fa0b78d129a42af4106a/transformed/animation-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/315b322c55382b1db371d6b7e8023050/transformed/ui-tooling-data-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-data-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/315b322c55382b1db371d6b7e8023050/transformed/ui-tooling-data-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/24fffd89dee7fcba4b28b8b4ca5e78be/transformed/ui-unit-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/24fffd89dee7fcba4b28b8b4ca5e78be/transformed/ui-unit-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/0eeb9c14371f2a92d9adb01c2a3be142/transformed/ui-geometry-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/0eeb9c14371f2a92d9adb01c2a3be142/transformed/ui-geometry-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/526ab26c649680340bd3dac25371b845/transformed/ui-util-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/526ab26c649680340bd3dac25371b845/transformed/ui-util-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/eea708d217bb9a78774226cab60b34e9/transformed/ui-text-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/eea708d217bb9a78774226cab60b34e9/transformed/ui-text-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a5cb61137bb514f1b96db4d4e7238cc3/transformed/ui-tooling-preview-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-preview-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a5cb61137bb514f1b96db4d4e7238cc3/transformed/ui-tooling-preview-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8fd022701d7658c2c8af577b5f0a605d/transformed/ui-tooling-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-tooling-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8fd022701d7658c2c8af577b5f0a605d/transformed/ui-tooling-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5cd687cb18fd217a6fbd2efacfbbf299/transformed/ui-graphics-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5cd687cb18fd217a6fbd2efacfbbf299/transformed/ui-graphics-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-test-manifest:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a60160e1ba0313b15d93fbc37b7af226/transformed/ui-test-manifest-1.7.6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.ui:ui-test-manifest:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a60160e1ba0313b15d93fbc37b7af226/transformed/ui-test-manifest-1.7.6/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/c58ef742da83c2a5964ff1e19b85155e/transformed/material-icons-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/c58ef742da83c2a5964ff1e19b85155e/transformed/material-icons-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/028d5eecb9ad4c4b7b038e476572c1e6/transformed/ui-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/028d5eecb9ad4c4b7b038e476572c1e6/transformed/ui-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity:1.9.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/60c8edf470ef0af04136582b3592d953/transformed/activity-1.9.3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.9.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/60c8edf470ef0af04136582b3592d953/transformed/activity-1.9.3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8fdffe6b562a7b9befc0bba4314dea16/transformed/activity-ktx-1.9.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8fdffe6b562a7b9befc0bba4314dea16/transformed/activity-ktx-1.9.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.9.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/d61de8a08e064fbf7eeb7f73078b7f78/transformed/activity-compose-1.9.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.9.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/d61de8a08e064fbf7eeb7f73078b7f78/transformed/activity-compose-1.9.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.autofill:autofill:1.0.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a1f9b2d0421403ddc59df4e34d54d497/transformed/autofill-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.0.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a1f9b2d0421403ddc59df4e34d54d497/transformed/autofill-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.graphics:graphics-path:1.0.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/89d900861e27748526303c3826fa50d4/transformed/graphics-path-1.0.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.graphics:graphics-path:1.0.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/89d900861e27748526303c3826fa50d4/transformed/graphics-path-1.0.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f7e628dac3dc327eb4da95efb2139106/transformed/emoji2-1.3.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f7e628dac3dc327eb4da95efb2139106/transformed/emoji2-1.3.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/2aaacc0a43d9a557d7674aa0dacbe193/transformed/customview-poolingcontainer-1.0.0/AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/2aaacc0a43d9a557d7674aa0dacbe193/transformed/customview-poolingcontainer-1.0.0/AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.core:core-ktx:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/bdf163e3e229f1c3163dfef039543718/transformed/core-ktx-1.13.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/bdf163e3e229f1c3163dfef039543718/transformed/core-ktx-1.13.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/e6dfa1f890feca1545b0167d96148eb2/transformed/lifecycle-livedata-core-2.8.3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/e6dfa1f890feca1545b0167d96148eb2/transformed/lifecycle-livedata-core-2.8.3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/0aca78b032fcd2c8dd4d6ea5d8d20979/transformed/lifecycle-viewmodel-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/0aca78b032fcd2c8dd4d6ea5d8d20979/transformed/lifecycle-viewmodel-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/d43bfd64f3b95fb8b29b407b3a0da2d3/transformed/lifecycle-process-2.8.3/AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/d43bfd64f3b95fb8b29b407b3a0da2d3/transformed/lifecycle-process-2.8.3/AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/4f28e12114b19cfa489f8010c7c8d515/transformed/lifecycle-runtime-ktx-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/4f28e12114b19cfa489f8010c7c8d515/transformed/lifecycle-runtime-ktx-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/1c4d0d132e3d25ccc20ce15d6c44ad3f/transformed/lifecycle-runtime-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/1c4d0d132e3d25ccc20ce15d6c44ad3f/transformed/lifecycle-runtime-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/0e52ac5b0b4e9b397fadb81e909c5de9/transformed/lifecycle-viewmodel-ktx-2.8.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/0e52ac5b0b4e9b397fadb81e909c5de9/transformed/lifecycle-viewmodel-ktx-2.8.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f742720e03a48b218492aa5ff65c8dde/transformed/lifecycle-runtime-compose-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f742720e03a48b218492aa5ff65c8dde/transformed/lifecycle-runtime-compose-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a43a67cc230bde339675161706b6bd7f/transformed/lifecycle-viewmodel-savedstate-2.8.3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a43a67cc230bde339675161706b6bd7f/transformed/lifecycle-viewmodel-savedstate-2.8.3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/24710cf8baab865cd99d8479fa68c5ea/transformed/savedstate-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/24710cf8baab865cd99d8479fa68c5ea/transformed/savedstate-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/340a3b887a1a39af8e57ea9c06bda2cb/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/340a3b887a1a39af8e57ea9c06bda2cb/transformed/savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/10ad7c33b225390b9883abbcf8dc65f0/transformed/runtime-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/10ad7c33b225390b9883abbcf8dc65f0/transformed/runtime-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8bc1d19b7f29310ea88b7878a5500ffa/transformed/runtime-saveable-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8bc1d19b7f29310ea88b7878a5500ffa/transformed/runtime-saveable-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/2a3cce657f81f66291d2b10ee709357e/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/2a3cce657f81f66291d2b10ee709357e/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/3fd435d181d8a3511f4eb6ad9c9cb26c/transformed/annotation-experimental-1.4.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/3fd435d181d8a3511f4eb6ad9c9cb26c/transformed/annotation-experimental-1.4.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.startup:startup-runtime:1.1.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f508638fa5115e241e7af5d39f4811f2/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f508638fa5115e241e7af5d39f4811f2/transformed/startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.0.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/53fbdbfac3c8b1c62f051e679b65b273/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/53fbdbfac3c8b1c62f051e679b65b273/transformed/tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f68a29b581aeee1345f0d42885c58f5e/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f68a29b581aeee1345f0d42885c58f5e/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/16c2e391d60bf801504032276f3290aa/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/16c2e391d60bf801504032276f3290aa/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
+	android:targetSdkVersion
+		INJECTED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /storage/emulated/0/AndroStudioProjects/Mumtahin/app/src/main/AndroidManifest.xml
+activity#androidx.compose.ui.tooling.PreviewActivity
+ADDED from [androidx.compose.ui:ui-tooling-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8fd022701d7658c2c8af577b5f0a605d/transformed/ui-tooling-release/AndroidManifest.xml:23:9-25:39
+	android:exported
+		ADDED from [androidx.compose.ui:ui-tooling-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8fd022701d7658c2c8af577b5f0a605d/transformed/ui-tooling-release/AndroidManifest.xml:25:13-36
+	android:name
+		ADDED from [androidx.compose.ui:ui-tooling-android:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/8fd022701d7658c2c8af577b5f0a605d/transformed/ui-tooling-release/AndroidManifest.xml:24:13-71
+activity#androidx.activity.ComponentActivity
+ADDED from [androidx.compose.ui:ui-test-manifest:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a60160e1ba0313b15d93fbc37b7af226/transformed/ui-test-manifest-1.7.6/AndroidManifest.xml:23:9-25:39
+	android:exported
+		ADDED from [androidx.compose.ui:ui-test-manifest:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a60160e1ba0313b15d93fbc37b7af226/transformed/ui-test-manifest-1.7.6/AndroidManifest.xml:25:13-36
+	android:name
+		ADDED from [androidx.compose.ui:ui-test-manifest:1.7.6] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/a60160e1ba0313b15d93fbc37b7af226/transformed/ui-test-manifest-1.7.6/AndroidManifest.xml:24:13-63
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.3.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f7e628dac3dc327eb4da95efb2139106/transformed/emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/d43bfd64f3b95fb8b29b407b3a0da2d3/transformed/lifecycle-process-2.8.3/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/d43bfd64f3b95fb8b29b407b3a0da2d3/transformed/lifecycle-process-2.8.3/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f508638fa5115e241e7af5d39f4811f2/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f508638fa5115e241e7af5d39f4811f2/transformed/startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f7e628dac3dc327eb4da95efb2139106/transformed/emoji2-1.3.0/AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f7e628dac3dc327eb4da95efb2139106/transformed/emoji2-1.3.0/AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f7e628dac3dc327eb4da95efb2139106/transformed/emoji2-1.3.0/AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f7e628dac3dc327eb4da95efb2139106/transformed/emoji2-1.3.0/AndroidManifest.xml:25:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.3.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f7e628dac3dc327eb4da95efb2139106/transformed/emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f7e628dac3dc327eb4da95efb2139106/transformed/emoji2-1.3.0/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/f7e628dac3dc327eb4da95efb2139106/transformed/emoji2-1.3.0/AndroidManifest.xml:30:17-75
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+permission#com.mumtahin.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+uses-permission#com.mumtahin.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/83d726a1a94a3ea91236da9622524306/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/d43bfd64f3b95fb8b29b407b3a0da2d3/transformed/lifecycle-process-2.8.3/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/d43bfd64f3b95fb8b29b407b3a0da2d3/transformed/lifecycle-process-2.8.3/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.3] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/d43bfd64f3b95fb8b29b407b3a0da2d3/transformed/lifecycle-process-2.8.3/AndroidManifest.xml:30:17-78
+meta-data#androidx.profileinstaller.ProfileInstallerInitializer
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+receiver#androidx.profileinstaller.ProfileInstallReceiver
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+	android:enabled
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+	android:permission
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+	android:directBootAware
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+action#androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+action#androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+action#androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+action#androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /data/data/com.jahangir/files/home/.gradle/caches/8.11/transforms/5f116781e975e1e577b58498a0b23b01/transformed/profileinstaller-1.3.1/AndroidManifest.xml:50:25-92

@@ -1,0 +1,10 @@
+{
+    "projectName": "Mumtahin",
+    "packageName": "com.mumtahin",
+    "templateId": "compose-basic",
+    "createdAt": 1788265820445,
+    "targetSdk": 35,
+    "minSdk": 24,
+    "version": "1.0.0",
+    "androstudioVersion": "1.0.0"
+}
