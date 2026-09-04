@@ -29,9 +29,10 @@ import com.mumtahin.R
 
 /** Which bottom sheet is currently open, and what (if anything) it's editing. */
 private sealed class ActiveSheet {
-    data class Poem(val editing: SavedQuestion.Poem?) : ActiveSheet()
+    data class SingleQuestion(val typeTitle: String, val editing: SavedQuestion.SingleQuestion?) : ActiveSheet()
     data class WordList(val typeTitle: String, val editing: SavedQuestion.WordList?) : ActiveSheet()
     data class FillBlanks(val editing: SavedQuestion.FillBlanks?) : ActiveSheet()
+    data class ShortQuestions(val editing: SavedQuestion.ShortQuestions?) : ActiveSheet()
 }
 
 /**
@@ -43,8 +44,9 @@ private sealed class ActiveSheet {
  * The rest of this screen lives in sibling files in this package:
  * SavedQuestion.kt (models), AppTextField.kt (shared input style),
  * ExamInfoSection.kt, SavedQuestionsSection.kt, QuestionTypesSection.kt,
- * and one file per bottom sheet (PoemQuestionBottomSheet.kt,
- * WordListBottomSheet.kt, FillBlanksBottomSheet.kt).
+ * and one file per bottom sheet (SingleQuestionBottomSheet.kt — কবিতা/প্রশ্ন,
+ * WordListBottomSheet.kt — শব্দার্থ/বাক্য তৈরি/বিপরীত শব্দ,
+ * FillBlanksBottomSheet.kt — শূন্যস্থান, ShortQuestionsBottomSheet.kt — সংক্ষিপ্ত প্রশ্ন).
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -105,12 +107,16 @@ fun SubjectScreen(
                     questions = savedQuestions,
                     onEdit = { question ->
                         activeSheet = when (question) {
-                            is SavedQuestion.Poem -> ActiveSheet.Poem(editing = question)
+                            is SavedQuestion.SingleQuestion -> ActiveSheet.SingleQuestion(
+                                typeTitle = question.typeTitle,
+                                editing = question
+                            )
                             is SavedQuestion.WordList -> ActiveSheet.WordList(
                                 typeTitle = question.typeTitle,
                                 editing = question
                             )
                             is SavedQuestion.FillBlanks -> ActiveSheet.FillBlanks(editing = question)
+                            is SavedQuestion.ShortQuestions -> ActiveSheet.ShortQuestions(editing = question)
                         }
                     },
                     onDelete = { question ->
@@ -122,19 +128,21 @@ fun SubjectScreen(
             QuestionTypesSection(
                 addedQuestionTypes = savedQuestions.mapNotNull {
                     when (it) {
-                        is SavedQuestion.Poem -> "কবিতা"
+                        is SavedQuestion.SingleQuestion -> it.typeTitle
                         is SavedQuestion.WordList -> it.typeTitle
                         is SavedQuestion.FillBlanks -> "শূন্যস্থান"
+                        is SavedQuestion.ShortQuestions -> "সংক্ষিপ্ত প্রশ্ন"
                     }
                 }.toSet(),
                 onTypeClick = { typeTitle ->
                     activeSheet = when (typeTitle) {
-                        "কবিতা" -> ActiveSheet.Poem(editing = null)
+                        "কবিতা", "প্রশ্ন" -> ActiveSheet.SingleQuestion(typeTitle = typeTitle, editing = null)
                         "শব্দার্থ", "বাক্য তৈরি", "বিপরীত শব্দ" -> ActiveSheet.WordList(
                             typeTitle = typeTitle,
                             editing = null
                         )
                         "শূন্যস্থান" -> ActiveSheet.FillBlanks(editing = null)
+                        "সংক্ষিপ্ত প্রশ্ন" -> ActiveSheet.ShortQuestions(editing = null)
                         else -> null
                     }
                 }
@@ -145,23 +153,25 @@ fun SubjectScreen(
     }
 
     when (val sheet = activeSheet) {
-        is ActiveSheet.Poem -> {
-            PoemQuestionBottomSheet(
+        is ActiveSheet.SingleQuestion -> {
+            SingleQuestionBottomSheet(
+                typeTitle = sheet.typeTitle,
                 initialQuestion = sheet.editing,
                 onDismiss = { activeSheet = null },
                 onSave = { questionText, marks ->
                     val editingId = sheet.editing?.id
                     savedQuestions = if (editingId != null) {
                         savedQuestions.map {
-                            if (it.id == editingId && it is SavedQuestion.Poem) {
+                            if (it.id == editingId && it is SavedQuestion.SingleQuestion) {
                                 it.copy(questionText = questionText, marks = marks)
                             } else {
                                 it
                             }
                         }
                     } else {
-                        savedQuestions + SavedQuestion.Poem(
+                        savedQuestions + SavedQuestion.SingleQuestion(
                             id = System.currentTimeMillis(),
+                            typeTitle = sheet.typeTitle,
                             questionText = questionText,
                             marks = marks
                         )
@@ -222,6 +232,36 @@ fun SubjectScreen(
                         }
                     } else {
                         savedQuestions + SavedQuestion.FillBlanks(
+                            id = System.currentTimeMillis(),
+                            questionText = questionText,
+                            subQuestions = subQuestions,
+                            marks = marks
+                        )
+                    }
+                    activeSheet = null
+                }
+            )
+        }
+        is ActiveSheet.ShortQuestions -> {
+            ShortQuestionsBottomSheet(
+                initialQuestion = sheet.editing,
+                onDismiss = { activeSheet = null },
+                onSave = { questionText, subQuestions, marks ->
+                    val editingId = sheet.editing?.id
+                    savedQuestions = if (editingId != null) {
+                        savedQuestions.map {
+                            if (it.id == editingId && it is SavedQuestion.ShortQuestions) {
+                                it.copy(
+                                    questionText = questionText,
+                                    subQuestions = subQuestions,
+                                    marks = marks
+                                )
+                            } else {
+                                it
+                            }
+                        }
+                    } else {
+                        savedQuestions + SavedQuestion.ShortQuestions(
                             id = System.currentTimeMillis(),
                             questionText = questionText,
                             subQuestions = subQuestions,

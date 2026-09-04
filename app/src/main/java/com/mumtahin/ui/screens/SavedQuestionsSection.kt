@@ -62,16 +62,19 @@ private fun SavedQuestionCard(
     onDelete: () -> Unit
 ) {
     val questionText = when (question) {
-        is SavedQuestion.Poem -> question.questionText
+        is SavedQuestion.SingleQuestion -> question.questionText
         is SavedQuestion.WordList -> question.questionText
         is SavedQuestion.FillBlanks -> question.questionText
+        is SavedQuestion.ShortQuestions -> question.questionText
     }
     val metaText = when (question) {
-        is SavedQuestion.Poem -> "মার্ক: ${question.marks}"
+        is SavedQuestion.SingleQuestion -> "ধরন: ${question.typeTitle}  ·  মার্ক: ${question.marks}"
         is SavedQuestion.WordList ->
             "ধরন: ${question.typeTitle}  ·  মোট শব্দ: ${question.words.size}  ·  মার্ক: ${question.marks}"
         is SavedQuestion.FillBlanks ->
             "মোট শূন্যস্থান: ${question.subQuestions.size}  ·  মার্ক: ${question.marks}"
+        is SavedQuestion.ShortQuestions ->
+            "মোট প্রশ্ন: ${question.subQuestions.size}  ·  মার্ক: ${question.marks}"
     }
 
     Card(

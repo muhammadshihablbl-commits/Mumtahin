@@ -6,6 +6,17 @@ internal data class WordItem(
     val word: String
 )
 
+/** বাংলা ক)/খ)/গ)... ordinal labels used by any sub-question list. */
+internal val banglaOrdinalLabels = listOf(
+    "ক", "খ", "গ", "ঘ", "ঙ", "চ", "ছ", "জ", "ঝ", "ঞ",
+    "ট", "ঠ", "ড", "ঢ", "ণ", "ত", "থ", "দ", "ধ", "ন",
+    "প", "ফ", "ব", "ভ", "ম", "য", "র", "ল", "শ", "ষ",
+    "স", "হ"
+)
+
+internal fun ordinalLabel(index: Int): String =
+    banglaOrdinalLabels.getOrNull(index) ?: (index + 1).toString()
+
 /**
  * A saved question of any supported type. Add a new data class here for
  * each new question type — SavedQuestionCard and SubjectScreen's `when`
@@ -15,8 +26,10 @@ internal sealed class SavedQuestion {
     abstract val id: Long
     abstract val marks: String
 
-    data class Poem(
+    /** One question + a single (usually long) answer — কবিতা and প্রশ্ন share this. */
+    data class SingleQuestion(
         override val id: Long,
+        val typeTitle: String,
         val questionText: String,
         override val marks: String
     ) : SavedQuestion()
@@ -30,6 +43,14 @@ internal sealed class SavedQuestion {
     ) : SavedQuestion()
 
     data class FillBlanks(
+        override val id: Long,
+        val questionText: String,
+        val subQuestions: List<String>,
+        override val marks: String
+    ) : SavedQuestion()
+
+    /** A main question plus a growing list of ক)/খ)... short-answer sub-questions. */
+    data class ShortQuestions(
         override val id: Long,
         val questionText: String,
         val subQuestions: List<String>,

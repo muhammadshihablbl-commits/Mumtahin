@@ -1,6 +1,5 @@
 package com.mumtahin.ui.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
@@ -33,27 +33,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
-/** One "ক) ..." fill-in-the-blank sub-question. */
-private data class BlankItem(
+/** One "ক) ..." short-answer sub-question. */
+private data class ShortSubQuestion(
     val id: Long,
-    val value: TextFieldValue = TextFieldValue("")
+    val text: String
 )
 
 /**
- * Bottom sheet opened from the "শূন্যস্থান" question-type card. Each
- * sub-question is prefixed ক), খ), গ)... and has a built-in "___" button
- * that inserts a blank at the current cursor position, plus a remove "✕".
+ * Bottom sheet opened from the "সংক্ষিপ্ত প্রশ্ন" question-type card. Same
+ * ক)/খ)/গ)... growing sub-question list as শূন্যস্থান, but a plain answer
+ * field — no built-in blank inserter here.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun FillBlanksBottomSheet(
-    initialQuestion: SavedQuestion.FillBlanks?,
+internal fun ShortQuestionsBottomSheet(
+    initialQuestion: SavedQuestion.ShortQuestions?,
     onDismiss: () -> Unit,
     onSave: (questionText: String, subQuestions: List<String>, marks: String) -> Unit
 ) {
@@ -61,13 +59,13 @@ internal fun FillBlanksBottomSheet(
     val scope = rememberCoroutineScope()
     var questionText by remember { mutableStateOf(initialQuestion?.questionText ?: "") }
     var marks by remember { mutableStateOf(initialQuestion?.marks ?: "") }
-    var blanks by remember {
+    var subQuestions by remember {
         mutableStateOf(
             (initialQuestion?.subQuestions?.takeIf { it.isNotEmpty() } ?: listOf(""))
-                .mapIndexed { index, text -> BlankItem(id = index.toLong(), value = TextFieldValue(text)) }
+                .mapIndexed { index, text -> ShortSubQuestion(id = index.toLong(), text = text) }
         )
     }
-    var nextBlankId by remember { mutableStateOf((blanks.maxOfOrNull { it.id } ?: 0L) + 1) }
+    var nextId by remember { mutableStateOf((subQuestions.maxOfOrNull { it.id } ?: 0L) + 1) }
 
     val focusRequesters = remember { mutableStateMapOf<Long, FocusRequester>() }
     var newlyAddedId by remember { mutableStateOf<Long?>(null) }
@@ -98,7 +96,7 @@ internal fun FillBlanksBottomSheet(
                 .padding(bottom = 24.dp)
         ) {
             Text(
-                text = "শূন্যস্থান",
+                text = "সংক্ষিপ্ত প্রশ্ন",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 4.dp)
@@ -107,7 +105,7 @@ internal fun FillBlanksBottomSheet(
                 text = if (initialQuestion != null) {
                     "প্রশ্ন সম্পাদনা করুন"
                 } else {
-                    "প্রশ্ন ও শূন্যস্থান যোগ করুন"
+                    "প্রশ্ন ও sub-প্রশ্ন যোগ করুন"
                 },
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
@@ -118,43 +116,31 @@ internal fun FillBlanksBottomSheet(
                 label = "প্রশ্ন",
                 value = questionText,
                 onValueChange = { questionText = it },
-                placeholder = "যেমন: শূন্যস্থান পূরণ করো"
+                placeholder = "যেমন: নিচের প্রশ্নগুলোর উত্তর দাও"
             )
 
             Text(
-                text = "শূন্যস্থান বাক্য",
+                text = "সংক্ষিপ্ত প্রশ্নসমূহ",
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
-            blanks.forEachIndexed { index, item ->
+            subQuestions.forEachIndexed { index, item ->
                 val focusRequester = focusRequesters.getOrPut(item.id) { FocusRequester() }
-                BlankSubQuestionRow(
+                ShortSubQuestionRow(
                     label = ordinalLabel(index),
-                    item = item,
-                    canRemove = blanks.size > 1,
+                    value = item.text,
+                    canRemove = subQuestions.size > 1,
                     focusRequester = focusRequester,
-                    onValueChange = { newValue ->
-                        blanks = blanks.map { if (it.id == item.id) it.copy(value = newValue) else it }
-                    },
-                    onInsertBlank = {
-                        val current = item.value
-                        val start = current.selection.start
-                        val end = current.selection.end
-                        val newText = current.text.replaceRange(start, end, "_____")
-                        val newCursor = start + 5
-                        blanks = blanks.map {
-                            if (it.id == item.id) {
-                                it.copy(value = TextFieldValue(newText, TextRange(newCursor)))
-                            } else {
-                                it
-                            }
+                    onValueChange = { newText ->
+                        subQuestions = subQuestions.map {
+                            if (it.id == item.id) it.copy(text = newText) else it
                         }
                     },
                     onRemove = {
-                        blanks = blanks.filterNot { it.id == item.id }
+                        subQuestions = subQuestions.filterNot { it.id == item.id }
                         focusRequesters.remove(item.id)
                     }
                 )
@@ -162,9 +148,9 @@ internal fun FillBlanksBottomSheet(
 
             OutlinedButton(
                 onClick = {
-                    val newId = nextBlankId
-                    blanks = blanks + BlankItem(id = newId, value = TextFieldValue(""))
-                    nextBlankId += 1
+                    val newId = nextId
+                    subQuestions = subQuestions + ShortSubQuestion(id = newId, text = "")
+                    nextId += 1
                     newlyAddedId = newId
                 },
                 modifier = Modifier
@@ -187,7 +173,7 @@ internal fun FillBlanksBottomSheet(
             Button(
                 onClick = {
                     dismissSheet {
-                        val nonEmpty = blanks.map { it.value.text }.filter { it.isNotBlank() }
+                        val nonEmpty = subQuestions.map { it.text }.filter { it.isNotBlank() }
                         onSave(questionText, nonEmpty, marks)
                     }
                 },
@@ -203,13 +189,12 @@ internal fun FillBlanksBottomSheet(
 }
 
 @Composable
-private fun BlankSubQuestionRow(
+private fun ShortSubQuestionRow(
     label: String,
-    item: BlankItem,
+    value: String,
     canRemove: Boolean,
     focusRequester: FocusRequester,
-    onValueChange: (TextFieldValue) -> Unit,
-    onInsertBlank: () -> Unit,
+    onValueChange: (String) -> Unit,
     onRemove: () -> Unit
 ) {
     Row(
@@ -228,35 +213,21 @@ private fun BlankSubQuestionRow(
         )
 
         OutlinedTextField(
-            value = item.value,
+            value = value,
             onValueChange = onValueChange,
             modifier = Modifier
                 .weight(1f)
                 .focusRequester(focusRequester),
-            placeholder = { Text("যেমন: আল্লাহ আমার____") },
+            placeholder = { Text("যেমন: তোমার রব কে?") },
             singleLine = true,
             shape = MaterialTheme.shapes.medium,
             trailingIcon = {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    // Built-in blank inserter — taps in "_____" at the
-                    // cursor so the user doesn't have to type underscores.
-                    Text(
-                        text = "___",
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .padding(horizontal = 6.dp)
-                            .clickable { onInsertBlank() }
-                    )
-                    if (canRemove) {
+                if (canRemove) {
+                    IconButton(onClick = onRemove) {
                         Text(
                             text = "✕",
                             style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.error,
-                            modifier = Modifier
-                                .padding(end = 8.dp)
-                                .clickable { onRemove() }
+                            color = MaterialTheme.colorScheme.error
                         )
                     }
                 }

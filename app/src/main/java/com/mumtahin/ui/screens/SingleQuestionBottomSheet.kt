@@ -26,14 +26,15 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
 /**
- * Bottom sheet opened from the "কবিতা" question-type card, both for adding a
- * new question (initialQuestion = null) and for editing an existing one
- * (initialQuestion pre-fills the fields).
+ * Bottom sheet shared by "কবিতা" and "প্রশ্ন" — a single question whose
+ * answer is expected to be long, with no sub-questions. `typeTitle` picks
+ * the sheet's heading and question-field hint.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun PoemQuestionBottomSheet(
-    initialQuestion: SavedQuestion.Poem?,
+internal fun SingleQuestionBottomSheet(
+    typeTitle: String,
+    initialQuestion: SavedQuestion.SingleQuestion?,
     onDismiss: () -> Unit,
     onSave: (questionText: String, marks: String) -> Unit
 ) {
@@ -61,7 +62,7 @@ internal fun PoemQuestionBottomSheet(
                 .padding(bottom = 24.dp)
         ) {
             Text(
-                text = "কবিতা",
+                text = typeTitle,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 4.dp)
@@ -81,7 +82,11 @@ internal fun PoemQuestionBottomSheet(
                 label = "প্রশ্ন",
                 value = question,
                 onValueChange = { question = it },
-                placeholder = "যেমন: প্রার্থনা কবিতার প্রথম ১২ লাইন সুন্দর করে লিখ",
+                placeholder = when (typeTitle) {
+                    "কবিতা" -> "যেমন: প্রার্থনা কবিতার প্রথম ১২ লাইন সুন্দর করে লিখ"
+                    "প্রশ্ন" -> "যেমন: রাসূলুল্লাহ (সা.)-এর জীবনী বর্ণনা কর"
+                    else -> "প্রশ্ন লিখুন"
+                },
                 singleLine = false,
                 minLines = 3
             )
