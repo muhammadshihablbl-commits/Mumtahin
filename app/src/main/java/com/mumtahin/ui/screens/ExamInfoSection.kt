@@ -1,36 +1,27 @@
 package com.mumtahin.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Book
-import androidx.compose.material.icons.filled.Class
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.Grade
-import androidx.compose.material.icons.filled.School
-import androidx.compose.material.icons.filled.Timer
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,161 +30,131 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ExamInfoSection(
-    examName: String,
-    onExamNameChange: (String) -> Unit,
-    madrasahName: String,
-    onMadrasahNameChange: (String) -> Unit,
-    subjectName: String,
-    onSubjectNameChange: (String) -> Unit,
-    className: String,
-    onClassNameChange: (String) -> Unit,
-    time: String,
-    onTimeChange: (String) -> Unit,
-    fullMarks: String,
-    onFullMarksChange: (String) -> Unit,
-    onSave: () -> Unit
-) {
-    var isExpanded by remember { mutableStateOf(true) }
+internal fun ExamInfoSection(subjectName: String) {
+    var expanded by remember { mutableStateOf(true) }
+    val arrowRotation by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f,
+        label = "examInfoArrowRotation"
+    )
+
+    // Local, in-memory field state for now — no persistence/functionality yet.
+    var examName by remember { mutableStateOf("") }
+    var madrasaName by remember { mutableStateOf("") }
+    var subject by remember { mutableStateOf(subjectName) }
+    var className by remember { mutableStateOf("") }
+    var duration by remember { mutableStateOf("") }
+    var fullMarks by remember { mutableStateOf("") }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(28.dp),
+            .padding(horizontal = 20.dp, vertical = 16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer
-        )
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        shape = MaterialTheme.shapes.large
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
-            // Header Row
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { isExpanded = !isExpanded },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = "Exam Information",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        text = if (isExpanded) "তথ্য পরিবর্তন করতে নিচে লিখুন" else "পরীক্ষা সম্পর্কিত তথ্য দেখতে ট্যাপ করুন",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                Icon(
-                    imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = !expanded }
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "Exam Information",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = "পরীক্ষা সম্পর্কিত তথ্য দেখতে ট্যাপ করুন",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    modifier = Modifier.padding(top = 2.dp)
                 )
             }
+            Icon(
+                imageVector = Icons.Filled.KeyboardArrowDown,
+                contentDescription = if (expanded) "Collapse" else "Expand",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.rotate(arrowRotation)
+            )
+        }
 
-            AnimatedVisibility(
-                visible = isExpanded,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
+        AnimatedVisibility(
+            visible = expanded,
+            enter = expandVertically() + fadeIn(),
+            exit = shrinkVertically() + fadeOut()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
             ) {
-                Column(modifier = Modifier.padding(top = 16.dp)) {
-                    ExpressiveInputField(
-                        value = examName,
-                        onValueChange = onExamNameChange,
-                        label = "পরীক্ষার নাম",
-                        icon = Icons.Default.Edit
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
+                HorizontalDivider(
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f)
+                )
+                Spacer(modifier = Modifier.height(12.dp))
 
-                    ExpressiveInputField(
-                        value = madrasahName,
-                        onValueChange = onMadrasahNameChange,
-                        label = "মাদরাসার নাম",
-                        icon = Icons.Default.School
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
+                AppTextField(
+                    label = "পরীক্ষার নাম",
+                    value = examName,
+                    onValueChange = { examName = it },
+                    placeholder = "যেমন: অর্ধবার্ষিক পরীক্ষা"
+                )
+                AppTextField(
+                    label = "মাদ্রাসার নাম",
+                    value = madrasaName,
+                    onValueChange = { madrasaName = it },
+                    placeholder = "মাদ্রাসার নাম লিখুন"
+                )
+                AppTextField(
+                    label = "বিষয়",
+                    value = subject,
+                    onValueChange = { subject = it },
+                    placeholder = "যেমন: বাংলা"
+                )
+                AppTextField(
+                    label = "শ্রেণী",
+                    value = className,
+                    onValueChange = { className = it },
+                    placeholder = "যেমন: ৬ষ্ঠ"
+                )
+                AppTextField(
+                    label = "সময়",
+                    value = duration,
+                    onValueChange = { duration = it },
+                    placeholder = "যেমন: ২ ঘণ্টা"
+                )
+                AppTextField(
+                    label = "পূর্ণমান",
+                    value = fullMarks,
+                    onValueChange = { fullMarks = it },
+                    placeholder = "যেমন: ১০০"
+                )
 
-                    ExpressiveInputField(
-                        value = subjectName,
-                        onValueChange = onSubjectNameChange,
-                        label = "বিষয়",
-                        icon = Icons.Default.Book
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
-                    ExpressiveInputField(
-                        value = className,
-                        onValueChange = onClassNameChange,
-                        label = "শ্রেণী",
-                        icon = Icons.Default.Class
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    ExpressiveInputField(
-                        value = time,
-                        onValueChange = onTimeChange,
-                        label = "সময়",
-                        icon = Icons.Default.Timer
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    ExpressiveInputField(
-                        value = fullMarks,
-                        onValueChange = onFullMarksChange,
-                        label = "পূর্ণমান",
-                        icon = Icons.Default.Grade
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    Button(
-                        onClick = onSave,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(52.dp),
-                        shape = RoundedCornerShape(26.dp)
-                    ) {
-                        Icon(imageVector = Icons.Default.Check, contentDescription = null)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Save Information", fontWeight = FontWeight.Bold)
-                    }
+                Button(
+                    onClick = { expanded = false },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(52.dp),
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Text("Save")
                 }
+
+                Spacer(modifier = Modifier.height(4.dp))
             }
         }
     }
-}
-
-@Composable
-private fun ExpressiveInputField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    label: String,
-    icon: androidx.compose.ui.graphics.vector.ImageVector
-) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = { Text(label) },
-        leadingIcon = {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
-        },
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.surface,
-            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
-        ),
-        singleLine = true
-    )
 }
