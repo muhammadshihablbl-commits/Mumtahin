@@ -2,7 +2,7 @@ package com.mumtahin.ui.screens
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -12,12 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-/**
- * Minimal, transparent-background text field style used everywhere on this
- * screen (Exam Information fields and all question-type bottom sheets) so
- * every input looks the same: subtle border, clear label + placeholder.
- */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AppTextField(
     label: String,
@@ -38,11 +32,12 @@ internal fun AppTextField(
         placeholder = { Text(placeholder) },
         singleLine = singleLine,
         minLines = minLines,
-        shape = MaterialTheme.shapes.medium,
+        shape = RoundedCornerShape(16.dp), // Expressive Rounded Field
         colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = Color.Transparent,
-            unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
+            focusedContainerColor = MaterialTheme.colorScheme.surface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
         )
     )
 }

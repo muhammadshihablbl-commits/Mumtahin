@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -47,9 +48,6 @@ internal fun QuestionTypesSection(
     addedQuestionTypes: Set<String>,
     onTypeClick: (String) -> Unit
 ) {
-    // Local selection state for the other (not-yet-wired) question types —
-    // kept here so real selected/unselected behavior can be added later
-    // without restructuring the UI.
     var selectedTypes by remember { mutableStateOf(setOf<String>()) }
 
     Column(
@@ -59,9 +57,10 @@ internal fun QuestionTypesSection(
     ) {
         Text(
             text = "প্রশ্নের ধরন",
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 8.dp, bottom = 12.dp)
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.padding(top = 12.dp, bottom = 16.dp)
         )
 
         questionTypes.chunked(2).forEach { rowItems ->
@@ -96,8 +95,6 @@ internal fun QuestionTypesSection(
                         modifier = Modifier.weight(1f)
                     )
                 }
-                // Odd item count: keep the last, lone card at half width
-                // so the grid still looks balanced instead of stretching.
                 if (rowItems.size == 1) {
                     Spacer(modifier = Modifier.weight(1f))
                 }
@@ -118,23 +115,23 @@ private fun QuestionTypeCard(
         targetValue = if (selected) {
             MaterialTheme.colorScheme.primaryContainer
         } else {
-            MaterialTheme.colorScheme.surfaceVariant
+            MaterialTheme.colorScheme.surfaceContainerHigh
         },
         label = "questionTypeCardColor"
     )
     val contentColor = if (selected) {
         MaterialTheme.colorScheme.onPrimaryContainer
     } else {
-        MaterialTheme.colorScheme.onSurfaceVariant
+        MaterialTheme.colorScheme.onSurface
     }
 
     Card(
         onClick = onClick,
-        modifier = modifier.height(56.dp),
+        modifier = modifier.height(64.dp), // এক্সপ্রেসভ লেআউটে বড় টাচ টার্গেট
         colors = CardDefaults.cardColors(containerColor = containerColor),
-        shape = MaterialTheme.shapes.medium,
+        shape = RoundedCornerShape(20.dp), // Expressive Rounded Corner
         border = if (selected) {
-            BorderStroke(1.5.dp, MaterialTheme.colorScheme.primary)
+            BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
         } else {
             null
         }
@@ -147,8 +144,8 @@ private fun QuestionTypeCard(
         ) {
             Text(
                 text = label,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
                 color = contentColor,
                 textAlign = TextAlign.Center,
                 maxLines = 1

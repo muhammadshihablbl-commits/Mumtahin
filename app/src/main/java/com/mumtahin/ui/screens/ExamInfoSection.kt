@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Button
@@ -42,7 +44,6 @@ internal fun ExamInfoSection(subjectName: String) {
         label = "examInfoArrowRotation"
     )
 
-    // Local, in-memory field state for now — no persistence/functionality yet.
     var examName by remember { mutableStateOf("") }
     var madrasaName by remember { mutableStateOf("") }
     var subject by remember { mutableStateOf(subjectName) }
@@ -53,17 +54,17 @@ internal fun ExamInfoSection(subjectName: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 16.dp),
+            .padding(horizontal = 20.dp, vertical = 12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
         ),
-        shape = MaterialTheme.shapes.large
+        shape = RoundedCornerShape(28.dp) // MD3 Expressive Corner Radius
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable { expanded = !expanded }
-                .padding(16.dp),
+                .padding(20.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -72,12 +73,12 @@ internal fun ExamInfoSection(subjectName: String) {
                     text = "Exam Information",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
                     text = "পরীক্ষা সম্পর্কিত তথ্য দেখতে ট্যাপ করুন",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
                     modifier = Modifier.padding(top = 2.dp)
                 )
             }
@@ -97,12 +98,12 @@ internal fun ExamInfoSection(subjectName: String) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .padding(horizontal = 20.dp)
             ) {
                 HorizontalDivider(
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.2f)
+                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
                 )
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 AppTextField(
                     label = "পরীক্ষার নাম",
@@ -141,19 +142,23 @@ internal fun ExamInfoSection(subjectName: String) {
                     placeholder = "যেমন: ১০০"
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Button(
                     onClick = { expanded = false },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(52.dp),
-                    shape = MaterialTheme.shapes.medium
+                        .height(56.dp),
+                    shape = CircleShape // MD3 Expressive Pill Button
                 ) {
-                    Text("Save")
+                    Text(
+                        text = "Save",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     }
