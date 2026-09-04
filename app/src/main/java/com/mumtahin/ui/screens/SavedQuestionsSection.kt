@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -15,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -23,8 +25,7 @@ import com.mumtahin.R
 
 /**
  * Compact list of already-added questions, shown between Exam Information
- * and the Question Types grid. Works for any SavedQuestion subtype so more
- * question types can be added here later.
+ * and the Question Types grid. Dynamically shapes items according to MD3 guidelines.
  */
 @Composable
 internal fun SavedQuestionsSection(
@@ -44,13 +45,41 @@ internal fun SavedQuestionsSection(
             modifier = Modifier.padding(top = 8.dp, bottom = 12.dp)
         )
 
-        questions.forEach { question ->
+        val totalItems = questions.size
+
+        questions.forEachIndexed { index, question ->
+            // ডাইনামিক MD3 শেপ সরাসরি এখানেই ক্যালকুলেট করা হচ্ছে
+            val outerRadius = 24.dp
+            val innerRadius = 2.dp
+
+            val itemShape: Shape = when {
+                totalItems == 1 -> RoundedCornerShape(outerRadius)
+                index == 0 -> RoundedCornerShape(
+                    topStart = outerRadius,
+                    topEnd = outerRadius,
+                    bottomStart = innerRadius,
+                    bottomEnd = innerRadius
+                )
+                index == totalItems - 1 -> RoundedCornerShape(
+                    topStart = innerRadius,
+                    topEnd = innerRadius,
+                    bottomStart = outerRadius,
+                    bottomEnd = outerRadius
+                )
+                else -> RoundedCornerShape(innerRadius)
+            }
+
             SavedQuestionCard(
                 question = question,
+                shape = itemShape,
                 onEdit = { onEdit(question) },
                 onDelete = { onDelete(question) }
             )
-            Spacer(modifier = Modifier.height(10.dp))
+
+            // দুটি কার্ডের মাঝখানের গ্যাপ (কানেক্টেড লুক দেওয়ার জন্য ২.ডিপি)
+            if (index < totalItems - 1) {
+                Spacer(modifier = Modifier.height(2.dp))
+            }
         }
     }
 }
@@ -58,6 +87,7 @@ internal fun SavedQuestionsSection(
 @Composable
 private fun SavedQuestionCard(
     question: SavedQuestion,
+    shape: Shape,
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
@@ -82,7 +112,7 @@ private fun SavedQuestionCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
-        shape = MaterialTheme.shapes.large
+        shape = shape
     ) {
         Row(
             modifier = Modifier

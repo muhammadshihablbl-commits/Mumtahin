@@ -1,18 +1,24 @@
 package com.mumtahin.ui.screens
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -21,65 +27,114 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.mumtahin.R
 
-/**
- * A single subject shown in the home grid.
- * iconRes must point to a drawable you add under res/drawable (see note below).
- */
-private data class Subject(
-    val name: String,
+data class SubjectItem(
+    val id: String,
+    val title: String,
     val iconRes: Int
-)
-
-// NOTE: Add these vector/png drawables to res/drawable with these exact names:
-// ic_bangla, ic_english, ic_math, ic_arabic
-private val subjects = listOf(
-    Subject("বাংলা", R.drawable.ic_bangla),
-    Subject("ইংরেজি", R.drawable.ic_english),
-    Subject("অংক", R.drawable.ic_math),
-    Subject("আরবী", R.drawable.ic_arabic)
 )
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    onSubjectClick: (String) -> Unit = {}
+    onSubjectClick: (SubjectItem) -> Unit
 ) {
+    val subjects = listOf(
+        SubjectItem("bangla", "বাংলা", R.drawable.ic_bangla),
+        SubjectItem("english", "ইংরেজি", R.drawable.ic_english),
+        SubjectItem("math", "অংক", R.drawable.ic_math),
+        SubjectItem("arabic", "আরবী", R.drawable.ic_arabic)
+    )
+
     Column(
         modifier = modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 20.dp)
     ) {
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // ১. বড় এবং বোল্ড টাইটেল (Expressive Headline)
         Text(
             text = "Mumtahin",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 24.dp, bottom = 16.dp)
+            style = MaterialTheme.typography.headlineLarge,
+            fontWeight = FontWeight.ExtraBold,
+            color = MaterialTheme.colorScheme.onBackground
         )
 
-        HomeBanner()
+        Spacer(modifier = Modifier.height(16.dp))
 
+        // ২. এক্সপ্রেসভ ব্যানার কার্ড (Primary Container, 28dp Shape)
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(28.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer
+            )
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // ব্যানারের ভেতরের আইকন কনটেইনার
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_edit), // আপনার পছন্দের ব্যানার আইকন দিতে পারেন
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Text(
+                    text = "শিখো, প্র্যাকটিস করো, এগিয়ে যাও",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(28.dp))
+
+        // ৩. সাবজেক্ট সেকশনের টাইটেল
         Text(
             text = "Subjects",
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(top = 24.dp, bottom = 12.dp)
+            color = MaterialTheme.colorScheme.onBackground
         )
 
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // ৪. সাবজেক্ট গ্রিড (Expressive Cards with Icon Container)
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(bottom = 16.dp)
+            contentPadding = PaddingValues(bottom = 24.dp)
         ) {
             items(subjects) { subject ->
-                SubjectCard(
+                ExpressiveSubjectCard(
                     subject = subject,
-                    onClick = { onSubjectClick(subject.name) }
+                    onClick = { onSubjectClick(subject) }
                 )
             }
         }
@@ -87,69 +142,50 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HomeBanner() {
+private fun ExpressiveSubjectCard(
+    subject: SubjectItem,
+    onClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp),
+            .height(130.dp)
+            .clickable { onClick() },
+        shape = RoundedCornerShape(24.dp), // MD3 Expressive Corner
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        ),
-        shape = MaterialTheme.shapes.large
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 20.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // NOTE: Add a drawable named ic_banner to res/drawable.
-            Icon(
-                painter = painterResource(id = R.drawable.ic_banner),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.size(40.dp)
-            )
-            Text(
-                text = "শিখো, প্র্যাকটিস করো, এগিয়ে যাও",
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.padding(start = 16.dp)
-            )
-        }
-    }
-}
-
-@Composable
-private fun SubjectCard(subject: Subject, onClick: () -> Unit) {
-    Card(
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1.4f),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
-        ),
-        shape = MaterialTheme.shapes.large
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+        )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(12.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Icon(
-                painter = painterResource(id = subject.iconRes),
-                contentDescription = subject.name,
-                tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                modifier = Modifier.size(36.dp)
-            )
+            // আইকনের পেছনে সুন্দর টোনাল সার্কেল কনটেইনার
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.secondaryContainer),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = subject.iconRes),
+                    contentDescription = subject.title,
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
             Text(
-                text = subject.name,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                modifier = Modifier.padding(top = 8.dp)
+                text = subject.title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }

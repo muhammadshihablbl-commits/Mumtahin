@@ -97,8 +97,8 @@ fun MumtahinApp() {
         when (val screen = currentScreen) {
             AppScreen.Home -> HomeScreen(
                 modifier = Modifier.padding(innerPadding),
-                onSubjectClick = { subjectName ->
-                    currentScreen = AppScreen.Subject(subjectName)
+                onSubjectClick = { subjectItem ->
+                    currentScreen = AppScreen.Subject(subjectItem.title)
                 }
             )
             AppScreen.Settings -> SettingsScreen(modifier = Modifier.padding(innerPadding))
