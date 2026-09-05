@@ -27,28 +27,36 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
-private val questionTypes = listOf(
-    "কবিতা",
-    "শব্দার্থ",
-    "বাক্য তৈরি",
-    "বিপরীত শব্দ",
-    "শূন্যস্থান",
-    "সংক্ষিপ্ত প্রশ্ন",
-    "প্রশ্ন",
-    "ঠিক চিহ্ন",
-    "Table"
+/** Original full set — বাংলা ও ইংরেজি দুটোতেই একদম অপরিবর্তিত, কবিতাসহ। */
+private val defaultQuestionTypes = listOf(
+    "কবিতা", "শব্দার্থ", "বাক্য তৈরি", "বিপরীত শব্দ",
+    "শূন্যস্থান", "সংক্ষিপ্ত প্রশ্ন", "প্রশ্ন", "ঠিক চিহ্ন"
 )
 
+/**
+ * Which cards show up on the "প্রশ্নের ধরন" গ্রিডে — শুধু অংকের জন্য আলাদা
+ * সেট (টেক্সট-বেজড টাইপ বাদ, বদলে "অংক" টাইপ)। বাকি সব সাবজেক্ট (বাংলা,
+ * ইংরেজি, আরবী, ভবিষ্যতের যেকোনো নতুন সাবজেক্ট) একই ডিফল্ট সেট পাবে।
+ */
+private fun questionTypesFor(subjectName: String): List<String> = when (subjectName) {
+    "অংক" -> listOf("অংক", "শূন্যস্থান", "সংক্ষিপ্ত প্রশ্ন", "প্রশ্ন", "ঠিক চিহ্ন")
+    else -> defaultQuestionTypes
+}
+
+/** Every type that actually has a working bottom sheet wired up. */
 private val handledQuestionTypes = listOf(
-    "কবিতা", "শব্দার্থ", "বাক্য তৈরি", "বিপরীত শব্দ", "শূন্যস্থান", "সংক্ষিপ্ত প্রশ্ন", "প্রশ্ন", "ঠিক চিহ্ন"
+    "কবিতা", "শব্দার্থ", "বাক্য তৈরি", "বিপরীত শব্দ", "শূন্যস্থান",
+    "সংক্ষিপ্ত প্রশ্ন", "প্রশ্ন", "ঠিক চিহ্ন", "অংক"
 )
 
 @Composable
 internal fun QuestionTypesSection(
+    subjectName: String,
     addedQuestionTypes: Set<String>,
     onTypeClick: (String) -> Unit
 ) {
     var selectedTypes by remember { mutableStateOf(setOf<String>()) }
+    val questionTypes = remember(subjectName) { questionTypesFor(subjectName) }
 
     Column(
         modifier = Modifier
@@ -127,7 +135,7 @@ private fun QuestionTypeCard(
 
     Card(
         onClick = onClick,
-        modifier = modifier.height(64.dp), // এক্সপ্রেসভ লেআউটে বড় টাচ টার্গেট
+        modifier = modifier.height(64.dp), // এক্সপ্রেসভ লেআউটে বড় টাচ টার্গেট
         colors = CardDefaults.cardColors(containerColor = containerColor),
         shape = RoundedCornerShape(20.dp), // Expressive Rounded Corner
         border = if (selected) {

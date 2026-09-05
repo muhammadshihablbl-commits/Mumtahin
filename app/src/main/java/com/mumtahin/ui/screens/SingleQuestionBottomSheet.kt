@@ -67,6 +67,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun SingleQuestionBottomSheet(
     typeTitle: String,
+    subjectName: String,
     initialQuestion: SavedQuestion.SingleQuestion?,
     onDismiss: () -> Unit,
     onSave: (questionText: String, marks: String) -> Unit
@@ -104,9 +105,11 @@ internal fun SingleQuestionBottomSheet(
                 label = "প্রশ্ন",
                 value = question,
                 onValueChange = { question = it },
-                placeholder = when (typeTitle) {
-                    "কবিতা" -> "যেমন: প্রার্থনা কবিতার প্রথম ১২ লাইন সুন্দর করে লিখ"
-                    "প্রশ্ন" -> "যেমন: রাসূলুল্লাহ (সা.)-এর জীবনী বর্ণনা কর"
+                placeholder = when {
+                    typeTitle == "কবিতা" -> "যেমন: প্রার্থনা কবিতার প্রথম ১২ লাইন সুন্দর করে লিখ"
+                    typeTitle == "প্রশ্ন" && subjectName == "অংক" ->
+                        "যেমন: রহিমের কাছে ২৪৫ টাকা ছিল। সে ৮৭ টাকার একটি খাতা কিনল। তার কাছে এখন কত টাকা আছে? প্রক্রিয়াসহ সমাধান কর।"
+                    typeTitle == "প্রশ্ন" -> "যেমন: রাসূলুল্লাহ (সা.)-এর জীবনী বর্ণনা কর"
                     else -> "প্রশ্ন লিখুন"
                 },
                 singleLine = false,

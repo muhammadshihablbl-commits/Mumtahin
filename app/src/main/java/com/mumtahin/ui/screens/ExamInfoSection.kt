@@ -36,20 +36,26 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
+/** All the fields shown/edited in this card — hoisted so Preview can read them too. */
+internal data class ExamInfo(
+    val examName: String = "",
+    val madrasaName: String = "",
+    val subject: String = "",
+    val className: String = "",
+    val duration: String = "",
+    val fullMarks: String = ""
+)
+
 @Composable
-internal fun ExamInfoSection(subjectName: String) {
+internal fun ExamInfoSection(
+    examInfo: ExamInfo,
+    onExamInfoChange: (ExamInfo) -> Unit
+) {
     var expanded by remember { mutableStateOf(true) }
     val arrowRotation by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f,
         label = "examInfoArrowRotation"
     )
-
-    var examName by remember { mutableStateOf("") }
-    var madrasaName by remember { mutableStateOf("") }
-    var subject by remember { mutableStateOf(subjectName) }
-    var className by remember { mutableStateOf("") }
-    var duration by remember { mutableStateOf("") }
-    var fullMarks by remember { mutableStateOf("") }
 
     Card(
         modifier = Modifier
@@ -107,38 +113,38 @@ internal fun ExamInfoSection(subjectName: String) {
 
                 AppTextField(
                     label = "পরীক্ষার নাম",
-                    value = examName,
-                    onValueChange = { examName = it },
+                    value = examInfo.examName,
+                    onValueChange = { onExamInfoChange(examInfo.copy(examName = it)) },
                     placeholder = "যেমন: অর্ধবার্ষিক পরীক্ষা"
                 )
                 AppTextField(
                     label = "মাদ্রাসার নাম",
-                    value = madrasaName,
-                    onValueChange = { madrasaName = it },
+                    value = examInfo.madrasaName,
+                    onValueChange = { onExamInfoChange(examInfo.copy(madrasaName = it)) },
                     placeholder = "মাদ্রাসার নাম লিখুন"
                 )
                 AppTextField(
                     label = "বিষয়",
-                    value = subject,
-                    onValueChange = { subject = it },
+                    value = examInfo.subject,
+                    onValueChange = { onExamInfoChange(examInfo.copy(subject = it)) },
                     placeholder = "যেমন: বাংলা"
                 )
                 AppTextField(
                     label = "শ্রেণী",
-                    value = className,
-                    onValueChange = { className = it },
+                    value = examInfo.className,
+                    onValueChange = { onExamInfoChange(examInfo.copy(className = it)) },
                     placeholder = "যেমন: ৬ষ্ঠ"
                 )
                 AppTextField(
                     label = "সময়",
-                    value = duration,
-                    onValueChange = { duration = it },
+                    value = examInfo.duration,
+                    onValueChange = { onExamInfoChange(examInfo.copy(duration = it)) },
                     placeholder = "যেমন: ২ ঘণ্টা"
                 )
                 AppTextField(
                     label = "পূর্ণমান",
-                    value = fullMarks,
-                    onValueChange = { fullMarks = it },
+                    value = examInfo.fullMarks,
+                    onValueChange = { onExamInfoChange(examInfo.copy(fullMarks = it)) },
                     placeholder = "যেমন: ১০০"
                 )
 

@@ -1,5 +1,6 @@
 package com.mumtahin.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,8 +28,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -38,7 +41,8 @@ import com.mumtahin.R
 data class SubjectItem(
     val id: String,
     val title: String,
-    val iconRes: Int
+    val iconRes: Int,
+    val enabled: Boolean = true
 )
 
 @Composable
@@ -50,7 +54,7 @@ fun HomeScreen(
         SubjectItem("bangla", "বাংলা", R.drawable.ic_bangla),
         SubjectItem("english", "ইংরেজি", R.drawable.ic_english),
         SubjectItem("math", "অংক", R.drawable.ic_math),
-        SubjectItem("arabic", "আরবী", R.drawable.ic_arabic)
+        SubjectItem("arabic", "আরবী", R.drawable.ic_arabic, enabled = false)
     )
 
     Column(
@@ -61,7 +65,7 @@ fun HomeScreen(
     ) {
         Spacer(modifier = Modifier.height(24.dp))
 
-        // ১. বড় এবং বোল্ড টাইটেল (Expressive Headline)
+        // ১. বড় এবং বোল্ড টাইটেল (Expressive Headline)
         Text(
             text = "Mumtahin",
             style = MaterialTheme.typography.headlineLarge,
@@ -104,7 +108,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Text(
-                    text = "শিখো, প্র্যাকটিস করো, এগিয়ে যাও",
+                    text = "শিখো, প্র্যাকটিস করো, এগিয়ে যাও",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -146,47 +150,82 @@ private fun ExpressiveSubjectCard(
     subject: SubjectItem,
     onClick: () -> Unit
 ) {
+    val context = LocalContext.current
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(130.dp)
-            .clickable { onClick() },
+            .alpha(if (subject.enabled) 1f else 0.5f) // disabled subject looks visibly greyed out
+            .clickable {
+                if (subject.enabled) {
+                    onClick()
+                } else {
+                    Toast.makeText(
+                        context,
+                        "এই বিষয়টি এখনো উপলব্ধ নয় (Maintenance)",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            },
         shape = RoundedCornerShape(24.dp), // MD3 Expressive Corner
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
         )
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            // আইকনের পেছনে সুন্দর টোনাল সার্কেল কনটেইনার
-            Box(
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
                 modifier = Modifier
-                    .size(48.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.secondaryContainer),
-                contentAlignment = Alignment.Center
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Icon(
-                    painter = painterResource(id = subject.iconRes),
-                    contentDescription = subject.title,
-                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                    modifier = Modifier.size(24.dp)
+                // আইকনের পেছনে সুন্দর টোনাল সার্কেল কনটেইনার
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.secondaryContainer),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(id = subject.iconRes),
+                        contentDescription = subject.title,
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Text(
+                    text = subject.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Text(
-                text = subject.title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+            if (!subject.enabled) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(8.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.errorContainer,
+                            shape = RoundedCornerShape(50)
+                        )
+                        .padding(horizontal = 8.dp, vertical = 3.dp)
+                ) {
+                    Text(
+                        text = "Maintenance",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onErrorContainer
+                    )
+                }
+            }
         }
     }
 }

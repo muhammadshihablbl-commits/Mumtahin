@@ -2,6 +2,7 @@ package com.mumtahin
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
@@ -54,6 +55,10 @@ private sealed class AppScreen {
 @Composable
 fun MumtahinApp() {
     var currentScreen: AppScreen by remember { mutableStateOf<AppScreen>(AppScreen.Home) }
+
+    BackHandler(enabled = currentScreen != AppScreen.Home) {
+        currentScreen = AppScreen.Home
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),

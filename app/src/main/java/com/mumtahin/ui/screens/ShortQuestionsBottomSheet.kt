@@ -71,6 +71,7 @@ private data class ShortSubQuestion(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ShortQuestionsBottomSheet(
+    subjectName: String,
     initialQuestion: SavedQuestion.ShortQuestions?,
     onDismiss: () -> Unit,
     onSave: (questionText: String, subQuestions: List<String>, marks: String) -> Unit
@@ -135,11 +136,14 @@ internal fun ShortQuestionsBottomSheet(
                 modifier = Modifier.padding(bottom = 10.dp, top = 4.dp)
             )
 
+            val subQuestionPlaceholder = if (subjectName == "অংক") "যেমন: ৭ × ৮ = কত?" else "যেমন: তোমার রব কে?"
+
             subQuestions.forEachIndexed { index, item ->
                 val focusRequester = focusRequesters.getOrPut(item.id) { FocusRequester() }
                 ShortSubQuestionRow(
                     label = ordinalLabel(index),
                     value = item.text,
+                    placeholder = subQuestionPlaceholder,
                     canRemove = subQuestions.size > 1,
                     focusRequester = focusRequester,
                     onValueChange = { newText ->
@@ -233,6 +237,7 @@ private fun ShortQuestionsHeroHeader(isEditing: Boolean) {
 private fun ShortSubQuestionRow(
     label: String,
     value: String,
+    placeholder: String,
     canRemove: Boolean,
     focusRequester: FocusRequester,
     onValueChange: (String) -> Unit,
@@ -270,7 +275,7 @@ private fun ShortSubQuestionRow(
             modifier = Modifier
                 .weight(1f)
                 .focusRequester(focusRequester),
-            placeholder = { Text("যেমন: তোমার রব কে?") },
+            placeholder = { Text(placeholder) },
             singleLine = true,
             shape = RoundedCornerShape(20.dp),
             trailingIcon = {

@@ -6,6 +6,19 @@ internal data class WordItem(
     val word: String
 )
 
+/** Layout style for a set of গাণিতিক সমস্যা math problems. */
+internal enum class MathLayout {
+    VERTICAL,   // উপর-নিচে (কলাম ফর্ম)
+    HORIZONTAL  // পাশাপাশি (ইনলাইন)
+}
+
+/** One "operand1 operator operand2" math problem. */
+internal data class MathProblemEntry(
+    val operand1: String,
+    val operator: String, // "+", "−", "×", "÷"
+    val operand2: String
+)
+
 /** বাংলা ক)/খ)/গ)... ordinal labels used by any sub-question list. */
 internal val banglaOrdinalLabels = listOf(
     "ক", "খ", "গ", "ঘ", "ঙ", "চ", "ছ", "জ", "ঝ", "ঞ",
@@ -61,6 +74,14 @@ internal sealed class SavedQuestion {
         override val id: Long,
         val questionText: String,
         val statements: List<String>,
+        override val marks: String
+    ) : SavedQuestion()
+    
+    data class MathProblem(
+        override val id: Long,
+        val questionText: String,
+        val layout: MathLayout,
+        val problems: List<MathProblemEntry>,
         override val marks: String
     ) : SavedQuestion()
 }

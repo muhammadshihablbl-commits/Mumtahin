@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -22,10 +23,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,68 +39,55 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
-/** One "ক) ..." true/false statement (no answer key). */
-private data class TrueFalseStatement(
-    val id: Long,
-    val text: String
-)
+private val operators = listOf("+", "−", "×", "÷")
 
 /**
  * MD3 EXPRESSIVE
  *
- * Bottom sheet opened from the "ঠিক চিহ্ন" question-type card. Same
- * ক)/খ)/গ)... growing statement list as সংক্ষিপ্ত প্রশ্ন — just a plain
- * list of statements the student marks ✓/✗ on paper. No answer key is
- * stored here.
+ * Bottom sheet opened from the "গাণিতিক সমস্যা" question-type card. Each
+ * problem is operand1 [operator] operand2, where the operator is a
+ * cycling badge (tap to move to the next symbol) instead of a dropdown —
+ * faster to use on a phone keyboard-open layout. A layout toggle picks
+ * whether the whole set renders as column-form (উপর-নিচে) or inline
+ * (পাশাপাশি) on the exam paper.
  *
  * Uses stable Material3 APIs only — no ExperimentalMaterial3ExpressiveApi
  * opt-in needed.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun TrueFalseBottomSheet(
-    subjectName: String,
-    initialQuestion: SavedQuestion.TrueFalse?,
+internal fun MathProblemBottomSheet(
+    initialQuestion: SavedQuestion.MathProblem?,
     onDismiss: () -> Unit,
-    onSave: (questionText: String, statements: List<String>, marks: String) -> Unit
+    onSave: (questionText: String, layout: MathLayout, problems: List<MathProblemEntry>, marks: String) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
-    var questionText by remember { mutableStateOf(initialQuestion?.questionText ?: "") }
+    var questionText by remember { mutableStateOf(initialQuestion?.questionText ?: "নিচের অংকগুলো কর") }
     var marks by remember { mutableStateOf(initialQuestion?.marks ?: "") }
-    var statements by remember {
+    var layout by remember { mutableStateOf(initialQuestion?.layout ?: MathLayout.VERTICAL) }
+    var problems by remember {
         mutableStateOf(
-            (initialQuestion?.statements?.takeIf { it.isNotEmpty() } ?: listOf(""))
-                .mapIndexed { index, text -> TrueFalseStatement(id = index.toLong(), text = text) }
+            initialQuestion?.problems?.takeIf { it.isNotEmpty() }
+                ?.mapIndexed { index, entry -> IndexedMathEntry(id = index.toLong(), entry = entry) }
+                ?: listOf(IndexedMathEntry(id = 0L, entry = MathProblemEntry("", "+", "")))
         )
     }
-    var nextId by remember { mutableStateOf((statements.maxOfOrNull { it.id } ?: 0L) + 1) }
-
-    val focusRequesters = remember { mutableStateMapOf<Long, FocusRequester>() }
-    var newlyAddedId by remember { mutableStateOf<Long?>(null) }
-
-    LaunchedEffect(newlyAddedId) {
-        newlyAddedId?.let { id ->
-            focusRequesters[id]?.requestFocus()
-            newlyAddedId = null
-        }
-    }
+    var nextId by remember { mutableStateOf((problems.maxOfOrNull { it.id } ?: 0L) + 1) }
 
     fun dismissSheet(afterHide: () -> Unit) {
         scope.launch { sheetState.hide() }.invokeOnCompletion {
@@ -118,7 +108,7 @@ internal fun TrueFalseBottomSheet(
                 .imePadding()
                 .padding(bottom = 24.dp)
         ) {
-            TrueFalseHeroHeader(isEditing = initialQuestion != null)
+            MathProblemHeroHeader(isEditing = initialQuestion != null)
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -126,35 +116,29 @@ internal fun TrueFalseBottomSheet(
                 label = "প্রশ্ন",
                 value = questionText,
                 onValueChange = { questionText = it },
-                placeholder = "যেমন: নিচের বাক্যগুলোতে ঠিক (✓) বা ভুল (✗) চিহ্ন দাও"
+                placeholder = "যেমন: নিচের অংকগুলো কর"
             )
 
+            LayoutPicker(layout = layout, onLayoutChange = { layout = it })
+
             Text(
-                text = "বাক্যসমূহ",
+                text = "অংকসমূহ",
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(bottom = 10.dp, top = 4.dp)
             )
 
-            val statementPlaceholder = if (subjectName == "অংক") "যেমন: ৭ × ৬ = ৪৯" else "যেমন: আল্লাহ এক ও অদ্বিতীয়"
-
-            statements.forEachIndexed { index, item ->
-                val focusRequester = focusRequesters.getOrPut(item.id) { FocusRequester() }
-                TrueFalseStatementRow(
+            problems.forEachIndexed { index, item ->
+                MathProblemRow(
                     label = ordinalLabel(index),
-                    value = item.text,
-                    placeholder = statementPlaceholder,
-                    canRemove = statements.size > 1,
-                    focusRequester = focusRequester,
-                    onValueChange = { newText ->
-                        statements = statements.map {
-                            if (it.id == item.id) it.copy(text = newText) else it
-                        }
+                    entry = item.entry,
+                    canRemove = problems.size > 1,
+                    onEntryChange = { newEntry ->
+                        problems = problems.map { if (it.id == item.id) it.copy(entry = newEntry) else it }
                     },
                     onRemove = {
-                        statements = statements.filterNot { it.id == item.id }
-                        focusRequesters.remove(item.id)
+                        problems = problems.filterNot { it.id == item.id }
                     }
                 )
             }
@@ -162,16 +146,15 @@ internal fun TrueFalseBottomSheet(
             OutlinedButton(
                 onClick = {
                     val newId = nextId
-                    statements = statements + TrueFalseStatement(id = newId, text = "")
+                    problems = problems + IndexedMathEntry(id = newId, entry = MathProblemEntry("", "+", ""))
                     nextId += 1
-                    newlyAddedId = newId
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
                 shape = CircleShape
             ) {
-                Text("+ আরও বাক্য যোগ করুন", fontWeight = FontWeight.SemiBold)
+                Text("+ আরও অংক যোগ করুন", fontWeight = FontWeight.SemiBold)
             }
 
             AppTextField(
@@ -183,12 +166,14 @@ internal fun TrueFalseBottomSheet(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            TrueFalseSaveButton(
+            MathProblemSaveButton(
                 enabled = questionText.isNotBlank(),
                 onClick = {
                     dismissSheet {
-                        val nonEmpty = statements.map { it.text }.filter { it.isNotBlank() }
-                        onSave(questionText, nonEmpty, marks)
+                        val nonEmpty = problems
+                            .map { it.entry }
+                            .filter { it.operand1.isNotBlank() || it.operand2.isNotBlank() }
+                        onSave(questionText, layout, nonEmpty, marks)
                     }
                 }
             )
@@ -196,8 +181,11 @@ internal fun TrueFalseBottomSheet(
     }
 }
 
+/** Wraps a MathProblemEntry with a stable id for list diffing / focus tracking. */
+private data class IndexedMathEntry(val id: Long, val entry: MathProblemEntry)
+
 @Composable
-private fun TrueFalseHeroHeader(isEditing: Boolean) {
+private fun MathProblemHeroHeader(isEditing: Boolean) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
@@ -209,7 +197,7 @@ private fun TrueFalseHeroHeader(isEditing: Boolean) {
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = Icons.Filled.Check,
+                imageVector = Icons.Filled.Add,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.size(28.dp)
@@ -220,13 +208,13 @@ private fun TrueFalseHeroHeader(isEditing: Boolean) {
 
         Column {
             Text(
-                text = "ঠিক চিহ্ন",
+                text = "অংক",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.ExtraBold,
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = if (isEditing) "প্রশ্ন সম্পাদনা করুন" else "প্রশ্ন ও বাক্য যোগ করুন",
+                text = if (isEditing) "প্রশ্ন সম্পাদনা করুন" else "অংক ও লেআউট বাছাই করুন",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
             )
@@ -234,28 +222,60 @@ private fun TrueFalseHeroHeader(isEditing: Boolean) {
     }
 }
 
+/** উপর-নিচে vs পাশাপাশি — single-select pill chips, like the marks quick-picker. */
 @Composable
-private fun TrueFalseStatementRow(
+private fun LayoutPicker(layout: MathLayout, onLayoutChange: (MathLayout) -> Unit) {
+    Text(
+        text = "লেআউট",
+        style = MaterialTheme.typography.labelLarge,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onSurface,
+        modifier = Modifier.padding(bottom = 8.dp, top = 4.dp)
+    )
+    Row(modifier = Modifier.padding(bottom = 4.dp)) {
+        FilterChip(
+            selected = layout == MathLayout.VERTICAL,
+            onClick = { onLayoutChange(MathLayout.VERTICAL) },
+            label = { Text("উপর-নিচে") },
+            shape = RoundedCornerShape(50),
+            colors = FilterChipDefaults.filterChipColors(
+                selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                selectedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer
+            ),
+            modifier = Modifier.padding(end = 8.dp)
+        )
+        FilterChip(
+            selected = layout == MathLayout.HORIZONTAL,
+            onClick = { onLayoutChange(MathLayout.HORIZONTAL) },
+            label = { Text("পাশাপাশি") },
+            shape = RoundedCornerShape(50),
+            colors = FilterChipDefaults.filterChipColors(
+                selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                selectedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+        )
+    }
+}
+
+@Composable
+private fun MathProblemRow(
     label: String,
-    value: String,
-    placeholder: String,
+    entry: MathProblemEntry,
     canRemove: Boolean,
-    focusRequester: FocusRequester,
-    onValueChange: (String) -> Unit,
+    onEntryChange: (MathProblemEntry) -> Unit,
     onRemove: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 10.dp),
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-        // Circular ক)/খ)/গ)... badge, matching FillBlanks/ShortQuestions.
+        // ক)/খ)/গ)... badge
         Box(
             modifier = Modifier
-                .padding(top = 8.dp)
-                .size(32.dp)
+                .size(28.dp)
                 .background(
                     color = MaterialTheme.colorScheme.secondaryContainer,
                     shape = CircleShape
@@ -264,44 +284,78 @@ private fun TrueFalseStatementRow(
         ) {
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
 
         OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = Modifier
-                .weight(1f)
-                .focusRequester(focusRequester),
-            placeholder = { Text(placeholder) },
+            value = entry.operand1,
+            onValueChange = { onEntryChange(entry.copy(operand1 = it)) },
+            modifier = Modifier.weight(1f),
+            placeholder = { Text("৫২") },
             singleLine = true,
-            shape = RoundedCornerShape(20.dp),
-            trailingIcon = {
-                if (canRemove) {
-                    IconButton(onClick = onRemove) {
-                        Text(
-                            text = "✕",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
-                }
-            },
+            shape = RoundedCornerShape(16.dp),
+            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = KeyboardType.Number),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
+                unfocusedContainerColor = Color.Transparent
             )
         )
+
+        // Expressive: tap-to-cycle operator badge instead of a dropdown.
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    shape = RoundedCornerShape(12.dp)
+                )
+                .clickable {
+                    val currentIndex = operators.indexOf(entry.operator).takeIf { it >= 0 } ?: 0
+                    val nextOperator = operators[(currentIndex + 1) % operators.size]
+                    onEntryChange(entry.copy(operator = nextOperator))
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = entry.operator,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        }
+
+        OutlinedTextField(
+            value = entry.operand2,
+            onValueChange = { onEntryChange(entry.copy(operand2 = it)) },
+            modifier = Modifier.weight(1f),
+            placeholder = { Text("৩৮") },
+            singleLine = true,
+            shape = RoundedCornerShape(16.dp),
+            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = KeyboardType.Number),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent
+            )
+        )
+
+        if (canRemove) {
+            IconButton(onClick = onRemove, modifier = Modifier.size(32.dp)) {
+                Text(
+                    text = "✕",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        }
     }
 }
 
 /** Save button with a bouncy spring-based shape morph on press. */
 @Composable
-private fun TrueFalseSaveButton(enabled: Boolean, onClick: () -> Unit) {
+private fun MathProblemSaveButton(enabled: Boolean, onClick: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
@@ -311,7 +365,7 @@ private fun TrueFalseSaveButton(enabled: Boolean, onClick: () -> Unit) {
             dampingRatio = Spring.DampingRatioMediumBouncy,
             stiffness = Spring.StiffnessMedium
         ),
-        label = "trueFalseSaveButtonShapeMorph"
+        label = "mathProblemSaveButtonShapeMorph"
     )
 
     Button(

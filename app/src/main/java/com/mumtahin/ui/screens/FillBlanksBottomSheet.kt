@@ -74,6 +74,7 @@ private data class BlankItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun FillBlanksBottomSheet(
+    subjectName: String,
     initialQuestion: SavedQuestion.FillBlanks?,
     onDismiss: () -> Unit,
     onSave: (questionText: String, subQuestions: List<String>, marks: String) -> Unit
@@ -138,11 +139,14 @@ internal fun FillBlanksBottomSheet(
                 modifier = Modifier.padding(bottom = 10.dp, top = 4.dp)
             )
 
+            val blankPlaceholder = if (subjectName == "অংক") "যেমন: ৫ × ___ = ৩৫" else "যেমন: আল্লাহ আমার____"
+
             blanks.forEachIndexed { index, item ->
                 val focusRequester = focusRequesters.getOrPut(item.id) { FocusRequester() }
                 BlankSubQuestionRow(
                     label = ordinalLabel(index),
                     item = item,
+                    placeholder = blankPlaceholder,
                     canRemove = blanks.size > 1,
                     focusRequester = focusRequester,
                     onValueChange = { newValue ->
@@ -248,6 +252,7 @@ private fun FillBlanksHeroHeader(isEditing: Boolean) {
 private fun BlankSubQuestionRow(
     label: String,
     item: BlankItem,
+    placeholder: String,
     canRemove: Boolean,
     focusRequester: FocusRequester,
     onValueChange: (TextFieldValue) -> Unit,
@@ -286,7 +291,7 @@ private fun BlankSubQuestionRow(
             modifier = Modifier
                 .weight(1f)
                 .focusRequester(focusRequester),
-            placeholder = { Text("যেমন: আল্লাহ আমার____") },
+            placeholder = { Text(placeholder) },
             singleLine = true,
             shape = RoundedCornerShape(20.dp),
             trailingIcon = {
