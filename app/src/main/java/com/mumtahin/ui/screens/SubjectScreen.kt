@@ -33,6 +33,7 @@ private sealed class ActiveSheet {
     data class WordList(val typeTitle: String, val editing: SavedQuestion.WordList?) : ActiveSheet()
     data class FillBlanks(val editing: SavedQuestion.FillBlanks?) : ActiveSheet()
     data class ShortQuestions(val editing: SavedQuestion.ShortQuestions?) : ActiveSheet()
+    data class TrueFalse(val editing: SavedQuestion.TrueFalse?) : ActiveSheet()
 }
 
 /**
@@ -117,6 +118,7 @@ fun SubjectScreen(
                             )
                             is SavedQuestion.FillBlanks -> ActiveSheet.FillBlanks(editing = question)
                             is SavedQuestion.ShortQuestions -> ActiveSheet.ShortQuestions(editing = question)
+                            is SavedQuestion.TrueFalse -> ActiveSheet.TrueFalse(editing = question)
                         }
                     },
                     onDelete = { question ->
@@ -132,6 +134,7 @@ fun SubjectScreen(
                         is SavedQuestion.WordList -> it.typeTitle
                         is SavedQuestion.FillBlanks -> "শূন্যস্থান"
                         is SavedQuestion.ShortQuestions -> "সংক্ষিপ্ত প্রশ্ন"
+                        is SavedQuestion.TrueFalse -> "ঠিক চিহ্ন"
                     }
                 }.toSet(),
                 onTypeClick = { typeTitle ->
@@ -143,6 +146,7 @@ fun SubjectScreen(
                         )
                         "শূন্যস্থান" -> ActiveSheet.FillBlanks(editing = null)
                         "সংক্ষিপ্ত প্রশ্ন" -> ActiveSheet.ShortQuestions(editing = null)
+                        "ঠিক চিহ্ন" -> ActiveSheet.TrueFalse(editing = null)
                         else -> null
                     }
                 }
@@ -272,6 +276,33 @@ fun SubjectScreen(
                 }
             )
         }
+        
+        is ActiveSheet.TrueFalse -> {
+    TrueFalseBottomSheet(
+        initialQuestion = sheet.editing,
+        onDismiss = { activeSheet = null },
+        onSave = { questionText, statements, marks ->
+            val editingId = sheet.editing?.id
+            savedQuestions = if (editingId != null) {
+                savedQuestions.map {
+                    if (it.id == editingId && it is SavedQuestion.TrueFalse) {
+                        it.copy(questionText = questionText, statements = statements, marks = marks)
+                    } else {
+                        it
+                    }
+                }
+            } else {
+                savedQuestions + SavedQuestion.TrueFalse(
+                    id = System.currentTimeMillis(),
+                    questionText = questionText,
+                    statements = statements,
+                    marks = marks
+                )
+            }
+            activeSheet = null
+        }
+    )
+}
         null -> Unit
     }
 }

@@ -96,6 +96,7 @@ private fun SavedQuestionCard(
         is SavedQuestion.WordList -> question.questionText
         is SavedQuestion.FillBlanks -> question.questionText
         is SavedQuestion.ShortQuestions -> question.questionText
+        is SavedQuestion.TrueFalse -> question.questionText
     }
     val metaText = when (question) {
         is SavedQuestion.SingleQuestion -> "ধরন: ${question.typeTitle}  ·  মার্ক: ${question.marks}"
@@ -105,6 +106,8 @@ private fun SavedQuestionCard(
             "মোট শূন্যস্থান: ${question.subQuestions.size}  ·  মার্ক: ${question.marks}"
         is SavedQuestion.ShortQuestions ->
             "মোট প্রশ্ন: ${question.subQuestions.size}  ·  মার্ক: ${question.marks}"
+            is SavedQuestion.TrueFalse ->
+    "মোট বাক্য: ${question.statements.size}  ·  মার্ক: ${question.marks}"
     }
 
     Card(

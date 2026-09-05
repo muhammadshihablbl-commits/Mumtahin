@@ -56,4 +56,11 @@ internal sealed class SavedQuestion {
         val subQuestions: List<String>,
         override val marks: String
     ) : SavedQuestion()
+    
+    data class TrueFalse(
+        override val id: Long,
+        val questionText: String,
+        val statements: List<String>,
+        override val marks: String
+    ) : SavedQuestion()
 }

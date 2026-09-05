@@ -22,9 +22,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Create
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -50,41 +48,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
+/** One "ক) ..." true/false statement (no answer key). */
+private data class TrueFalseStatement(
+    val id: Long,
+    val text: String
+)
+
 /**
- * MD3 EXPRESSIVE VERSION
+ * MD3 EXPRESSIVE
  *
- * Bottom sheet shared by "শব্দার্থ", "বাক্য তৈরি" and "বিপরীত শব্দ" — any
- * question that's a title + a growing list of single-word entries + marks.
- * `typeTitle` picks the sheet's heading, icon, and question-field hint.
+ * Bottom sheet opened from the "ঠিক চিহ্ন" question-type card. Same
+ * ক)/খ)/গ)... growing statement list as সংক্ষিপ্ত প্রশ্ন — just a plain
+ * list of statements the student marks ✓/✗ on paper. No answer key is
+ * stored here.
  *
  * Uses stable Material3 APIs only — no ExperimentalMaterial3ExpressiveApi
  * opt-in needed.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun WordListBottomSheet(
-    typeTitle: String,
-    initialQuestion: SavedQuestion.WordList?,
+internal fun TrueFalseBottomSheet(
+    initialQuestion: SavedQuestion.TrueFalse?,
     onDismiss: () -> Unit,
-    onSave: (questionText: String, words: List<WordItem>, marks: String) -> Unit
+    onSave: (questionText: String, statements: List<String>, marks: String) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
     var questionText by remember { mutableStateOf(initialQuestion?.questionText ?: "") }
     var marks by remember { mutableStateOf(initialQuestion?.marks ?: "") }
-    var words by remember {
+    var statements by remember {
         mutableStateOf(
-            initialQuestion?.words ?: listOf(WordItem(id = 0L, word = ""))
+            (initialQuestion?.statements?.takeIf { it.isNotEmpty() } ?: listOf(""))
+                .mapIndexed { index, text -> TrueFalseStatement(id = index.toLong(), text = text) }
         )
     }
-    var nextWordId by remember { mutableStateOf((words.maxOfOrNull { it.id } ?: 0L) + 1) }
+    var nextId by remember { mutableStateOf((statements.maxOfOrNull { it.id } ?: 0L) + 1) }
 
-    // Auto-focus a freshly added word field.
     val focusRequesters = remember { mutableStateMapOf<Long, FocusRequester>() }
     var newlyAddedId by remember { mutableStateOf<Long?>(null) }
 
@@ -114,7 +117,7 @@ internal fun WordListBottomSheet(
                 .imePadding()
                 .padding(bottom = 24.dp)
         ) {
-            WordListHeroHeader(typeTitle = typeTitle, isEditing = initialQuestion != null)
+            TrueFalseHeroHeader(isEditing = initialQuestion != null)
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -122,61 +125,41 @@ internal fun WordListBottomSheet(
                 label = "প্রশ্ন",
                 value = questionText,
                 onValueChange = { questionText = it },
-                placeholder = when (typeTitle) {
-                    "শব্দার্থ" -> "যেমন: শব্দার্থ লেখ। যেকোনো ১২টি:"
-                    "বাক্য তৈরি" -> "যেমন: নিচের শব্দগুলো দিয়ে বাক্য তৈরি কর:"
-                    "বিপরীত শব্দ" -> "যেমন: বিপরীত শব্দ লেখো:"
-                    else -> "প্রশ্ন লিখুন"
-                }
+                placeholder = "যেমন: নিচের বাক্যগুলোতে ঠিক (✓) বা ভুল (✗) চিহ্ন দাও"
             )
 
             Text(
-                text = "শব্দসমূহ",
+                text = "বাক্যসমূহ",
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(bottom = 10.dp, top = 4.dp)
             )
 
-            words.chunked(2).forEach { rowWords ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 10.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    rowWords.forEach { wordItem ->
-                        val focusRequester = focusRequesters.getOrPut(wordItem.id) { FocusRequester() }
-
-                        WordItemField(
-                            wordItem = wordItem,
-                            canRemove = words.size > 1,
-                            focusRequester = focusRequester,
-                            onWordChange = { newWord ->
-                                words = words.map {
-                                    if (it.id == wordItem.id) it.copy(word = newWord) else it
-                                }
-                            },
-                            onRemove = {
-                                words = words.filterNot { it.id == wordItem.id }
-                                focusRequesters.remove(wordItem.id)
-                            },
-                            modifier = Modifier.weight(1f)
-                        )
+            statements.forEachIndexed { index, item ->
+                val focusRequester = focusRequesters.getOrPut(item.id) { FocusRequester() }
+                TrueFalseStatementRow(
+                    label = ordinalLabel(index),
+                    value = item.text,
+                    canRemove = statements.size > 1,
+                    focusRequester = focusRequester,
+                    onValueChange = { newText ->
+                        statements = statements.map {
+                            if (it.id == item.id) it.copy(text = newText) else it
+                        }
+                    },
+                    onRemove = {
+                        statements = statements.filterNot { it.id == item.id }
+                        focusRequesters.remove(item.id)
                     }
-                    if (rowWords.size == 1) {
-                        Spacer(modifier = Modifier.weight(1f))
-                    }
-                }
+                )
             }
 
-            // Expressive: pill-shaped outlined button instead of a flat
-            // rectangular one, matching ExamInfoSection's pill convention.
             OutlinedButton(
                 onClick = {
-                    val newId = nextWordId
-                    words = words + WordItem(id = newId, word = "")
-                    nextWordId += 1
+                    val newId = nextId
+                    statements = statements + TrueFalseStatement(id = newId, text = "")
+                    nextId += 1
                     newlyAddedId = newId
                 },
                 modifier = Modifier
@@ -184,24 +167,24 @@ internal fun WordListBottomSheet(
                     .padding(vertical = 8.dp),
                 shape = CircleShape
             ) {
-                Text("+ আরও শব্দ যোগ করুন", fontWeight = FontWeight.SemiBold)
+                Text("+ আরও বাক্য যোগ করুন", fontWeight = FontWeight.SemiBold)
             }
 
             AppTextField(
                 label = "মার্ক",
                 value = marks,
                 onValueChange = { marks = it },
-                placeholder = "যেমন: ১২"
+                placeholder = "যেমন: ১০"
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            WordListSaveButton(
+            TrueFalseSaveButton(
                 enabled = questionText.isNotBlank(),
                 onClick = {
                     dismissSheet {
-                        val nonEmptyWords = words.filter { it.word.isNotBlank() }
-                        onSave(questionText, nonEmptyWords, marks)
+                        val nonEmpty = statements.map { it.text }.filter { it.isNotBlank() }
+                        onSave(questionText, nonEmpty, marks)
                     }
                 }
             )
@@ -209,15 +192,8 @@ internal fun WordListBottomSheet(
     }
 }
 
-/** Icon badge + heading; the icon changes per word-list type. */
 @Composable
-private fun WordListHeroHeader(typeTitle: String, isEditing: Boolean) {
-    val icon: ImageVector = when (typeTitle) {
-        "শব্দার্থ" -> Icons.Filled.Search
-        "বিপরীত শব্দ" -> Icons.Filled.Refresh
-        else -> Icons.Filled.Create
-    }
-
+private fun TrueFalseHeroHeader(isEditing: Boolean) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
@@ -229,7 +205,7 @@ private fun WordListHeroHeader(typeTitle: String, isEditing: Boolean) {
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = icon,
+                imageVector = Icons.Filled.Check,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.size(28.dp)
@@ -240,13 +216,13 @@ private fun WordListHeroHeader(typeTitle: String, isEditing: Boolean) {
 
         Column {
             Text(
-                text = typeTitle,
+                text = "ঠিক চিহ্ন",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.ExtraBold,
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = if (isEditing) "প্রশ্ন সম্পাদনা করুন" else "প্রশ্ন ও শব্দ যোগ করুন",
+                text = if (isEditing) "প্রশ্ন সম্পাদনা করুন" else "প্রশ্ন ও বাক্য যোগ করুন",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
             )
@@ -255,44 +231,72 @@ private fun WordListHeroHeader(typeTitle: String, isEditing: Boolean) {
 }
 
 @Composable
-private fun WordItemField(
-    wordItem: WordItem,
+private fun TrueFalseStatementRow(
+    label: String,
+    value: String,
     canRemove: Boolean,
     focusRequester: FocusRequester,
-    onWordChange: (String) -> Unit,
-    onRemove: () -> Unit,
-    modifier: Modifier = Modifier
+    onValueChange: (String) -> Unit,
+    onRemove: () -> Unit
 ) {
-    OutlinedTextField(
-        value = wordItem.word,
-        onValueChange = onWordChange,
-        modifier = modifier.focusRequester(focusRequester),
-        label = { Text("শব্দ") },
-        singleLine = true,
-        // Expressive: rounder corners than MaterialTheme.shapes.medium
-        shape = RoundedCornerShape(20.dp),
-        trailingIcon = {
-            if (canRemove) {
-                IconButton(onClick = onRemove) {
-                    Text(
-                        text = "✕",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.error
-                    )
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 10.dp),
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        // Circular ক)/খ)/গ)... badge, matching FillBlanks/ShortQuestions.
+        Box(
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .size(32.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    shape = CircleShape
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+        }
+
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier
+                .weight(1f)
+                .focusRequester(focusRequester),
+            placeholder = { Text("যেমন: আল্লাহ এক ও অদ্বিতীয়") },
+            singleLine = true,
+            shape = RoundedCornerShape(20.dp),
+            trailingIcon = {
+                if (canRemove) {
+                    IconButton(onClick = onRemove) {
+                        Text(
+                            text = "✕",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
                 }
-            }
-        },
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = Color.Transparent,
-            unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
+            },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
+            )
         )
-    )
+    }
 }
 
 /** Save button with a bouncy spring-based shape morph on press. */
 @Composable
-private fun WordListSaveButton(enabled: Boolean, onClick: () -> Unit) {
+private fun TrueFalseSaveButton(enabled: Boolean, onClick: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
@@ -302,7 +306,7 @@ private fun WordListSaveButton(enabled: Boolean, onClick: () -> Unit) {
             dampingRatio = Spring.DampingRatioMediumBouncy,
             stiffness = Spring.StiffnessMedium
         ),
-        label = "wordListSaveButtonShapeMorph"
+        label = "trueFalseSaveButtonShapeMorph"
     )
 
     Button(
