@@ -27,14 +27,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+
+/** Which name shows first on the A4 preview page header. */
+internal enum class HeaderOrder {
+    EXAM_FIRST,     // পরীক্ষার নাম আগে
+    MADRASA_FIRST   // মাদ্রাসার নাম আগে
+}
 
 /** All the fields shown/edited in this card — hoisted so Preview can read them too. */
 internal data class ExamInfo(
@@ -43,15 +46,17 @@ internal data class ExamInfo(
     val subject: String = "",
     val className: String = "",
     val duration: String = "",
-    val fullMarks: String = ""
+    val fullMarks: String = "",
+    val headerOrder: HeaderOrder = HeaderOrder.EXAM_FIRST
 )
 
 @Composable
 internal fun ExamInfoSection(
     examInfo: ExamInfo,
-    onExamInfoChange: (ExamInfo) -> Unit
+    onExamInfoChange: (ExamInfo) -> Unit,
+    expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit
 ) {
-    var expanded by remember { mutableStateOf(true) }
     val arrowRotation by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f,
         label = "examInfoArrowRotation"
@@ -69,7 +74,7 @@ internal fun ExamInfoSection(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { expanded = !expanded }
+                .clickable { onExpandedChange(!expanded) }
                 .padding(20.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -123,6 +128,38 @@ internal fun ExamInfoSection(
                     onValueChange = { onExamInfoChange(examInfo.copy(madrasaName = it)) },
                     placeholder = "মাদ্রাসার নাম লিখুন"
                 )
+
+                Text(
+                    text = "প্রিভিউতে আগে কোনটা দেখাবে?",
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.padding(bottom = 8.dp, top = 4.dp)
+                )
+                Row(modifier = Modifier.padding(bottom = 16.dp)) {
+                    androidx.compose.material3.FilterChip(
+                        selected = examInfo.headerOrder == HeaderOrder.EXAM_FIRST,
+                        onClick = { onExamInfoChange(examInfo.copy(headerOrder = HeaderOrder.EXAM_FIRST)) },
+                        label = { Text("পরীক্ষার নাম আগে") },
+                        shape = RoundedCornerShape(50),
+                        colors = androidx.compose.material3.FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            selectedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer
+                        ),
+                        modifier = Modifier.padding(end = 8.dp)
+                    )
+                    androidx.compose.material3.FilterChip(
+                        selected = examInfo.headerOrder == HeaderOrder.MADRASA_FIRST,
+                        onClick = { onExamInfoChange(examInfo.copy(headerOrder = HeaderOrder.MADRASA_FIRST)) },
+                        label = { Text("মাদ্রাসার নাম আগে") },
+                        shape = RoundedCornerShape(50),
+                        colors = androidx.compose.material3.FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            selectedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    )
+                }
+
                 AppTextField(
                     label = "বিষয়",
                     value = examInfo.subject,
@@ -151,7 +188,7 @@ internal fun ExamInfoSection(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Button(
-                    onClick = { expanded = false },
+                    onClick = { onExpandedChange(false) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),

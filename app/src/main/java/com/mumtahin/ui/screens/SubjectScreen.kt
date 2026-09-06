@@ -62,6 +62,7 @@ fun SubjectScreen(
     var activeSheet by remember { mutableStateOf<ActiveSheet?>(null) }
     var isPreviewMode by remember { mutableStateOf(false) }
     var examInfo by remember { mutableStateOf(ExamInfo(subject = subjectName)) }
+    var examInfoExpanded by remember { mutableStateOf(true) }
 
     BackHandler(enabled = isPreviewMode) {
         isPreviewMode = false
@@ -119,7 +120,9 @@ fun SubjectScreen(
             ) {
                 ExamInfoSection(
                     examInfo = examInfo,
-                    onExamInfoChange = { examInfo = it }
+                    onExamInfoChange = { examInfo = it },
+                    expanded = examInfoExpanded,
+                    onExpandedChange = { examInfoExpanded = it }
                 )
 
                 if (savedQuestions.isNotEmpty()) {

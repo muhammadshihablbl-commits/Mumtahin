@@ -1,6 +1,7 @@
 package com.mumtahin.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.mumtahin.R
 
 /**
@@ -93,7 +95,11 @@ internal fun QuestionPreviewScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(vertical = 20.dp, horizontal = 16.dp)
         ) {
-            A4PageCanvas(examInfo = examInfo, savedQuestions = savedQuestions)
+            A4PageCanvas(
+                examInfo = examInfo,
+                savedQuestions = savedQuestions,
+                subjectName = subjectName
+            )
         }
     }
 }
@@ -104,7 +110,11 @@ internal fun QuestionPreviewScreen(
  * Its own content scrolls internally if it overflows one page's height.
  */
 @Composable
-private fun A4PageCanvas(examInfo: ExamInfo, savedQuestions: List<SavedQuestion>) {
+private fun A4PageCanvas(
+    examInfo: ExamInfo,
+    savedQuestions: List<SavedQuestion>,
+    subjectName: String
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -117,28 +127,29 @@ private fun A4PageCanvas(examInfo: ExamInfo, savedQuestions: List<SavedQuestion>
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(24.dp) // page margin
+                .padding(20.dp) // page margin — slightly tighter than before
         ) {
             PageHeader(examInfo = examInfo)
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             HorizontalDivider(color = Color.Black.copy(alpha = 0.4f))
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             if (savedQuestions.isEmpty()) {
                 Text(
                     text = "এখনো কোনো প্রশ্ন যোগ করা হয়নি",
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = 10.sp,
                     color = Color.Black.copy(alpha = 0.6f)
                 )
             } else {
                 savedQuestions.forEachIndexed { index, question ->
+                    val numberLabel = formatQuestionNumber(index + 1, subjectName)
                     if (question is SavedQuestion.MathProblem) {
-                        MathProblemPreviewRow(number = index + 1, question = question)
+                        MathProblemPreviewRow(number = numberLabel, question = question)
                     } else {
-                        PreviewQuestionRow(number = index + 1, question = question)
+                        PreviewQuestionRow(number = numberLabel, question = question)
                     }
-                    Spacer(modifier = Modifier.height(14.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }
@@ -148,47 +159,50 @@ private fun A4PageCanvas(examInfo: ExamInfo, savedQuestions: List<SavedQuestion>
 @Composable
 private fun PageHeader(examInfo: ExamInfo) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        if (examInfo.madrasaName.isNotBlank()) {
-            Text(
-                text = examInfo.madrasaName,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-        }
-        if (examInfo.examName.isNotBlank()) {
-            Text(
-                text = examInfo.examName,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = Color.Black,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.height(10.dp))
+        val nameOrder = if (examInfo.headerOrder == HeaderOrder.MADRASA_FIRST) {
+            listOf(examInfo.madrasaName to 13.sp, examInfo.examName to 11.sp)
+        } else {
+            listOf(examInfo.examName to 13.sp, examInfo.madrasaName to 11.sp)
         }
 
-        // বিষয় / শ্রেণী / সময় / পূর্ণমান — one row, like a real question paper.
-        Column(modifier = Modifier.fillMaxWidth()) {
-            if (examInfo.subject.isNotBlank()) {
-                MetaLine(label = "বিষয়", value = examInfo.subject)
+        nameOrder.forEach { (name, size) ->
+            if (name.isNotBlank()) {
+                Text(
+                    text = name,
+                    fontSize = size,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 2.dp)
+                )
             }
-            if (examInfo.className.isNotBlank()) {
+        }
+
+        Spacer(modifier = Modifier.height(6.dp))
+
+        // বিষয় ও শ্রেণী — কাছাকাছি, পুরো জোড়াটা পাতার মাঝখানে
+        if (examInfo.subject.isNotBlank() || examInfo.className.isNotBlank()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(28.dp, Alignment.CenterHorizontally)
+            ) {
+                MetaLine(label = "বিষয়", value = examInfo.subject)
                 MetaLine(label = "শ্রেণী", value = examInfo.className)
             }
-            if (examInfo.duration.isNotBlank() || examInfo.fullMarks.isNotBlank()) {
-                Text(
-                    text = listOfNotNull(
-                        examInfo.duration.takeIf { it.isNotBlank() }?.let { "সময়: $it" },
-                        examInfo.fullMarks.takeIf { it.isNotBlank() }?.let { "পূর্ণমান: $it" }
-                    ).joinToString("      "),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Black,
-                    modifier = Modifier.padding(top = 2.dp)
-                )
+        }
+
+        // সময় ও পূর্ণমান — একই সারিতে পাশাপাশি
+        if (examInfo.duration.isNotBlank() || examInfo.fullMarks.isNotBlank()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 2.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                MetaLine(label = "সময়", value = examInfo.duration)
+                MetaLine(label = "পূর্ণমান", value = examInfo.fullMarks)
             }
         }
     }
@@ -196,44 +210,64 @@ private fun PageHeader(examInfo: ExamInfo) {
 
 @Composable
 private fun MetaLine(label: String, value: String) {
+    if (value.isBlank()) {
+        Spacer(modifier = Modifier.width(1.dp))
+        return
+    }
     Text(
         text = "$label: $value",
-        style = MaterialTheme.typography.bodyMedium,
-        color = Color.Black,
-        modifier = Modifier.padding(bottom = 2.dp)
+        fontSize = 9.sp,
+        color = Color.Black
     )
 }
 
 @Composable
-private fun PreviewQuestionRow(number: Int, question: SavedQuestion) {
+private fun PreviewQuestionRow(number: String, question: SavedQuestion) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = "$number. ${previewQuestionText(question)}",
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = Color.Black
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "$number. ${previewQuestionText(question)}",
+                fontSize = 10.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Black,
+                modifier = Modifier.weight(1f).padding(end = 8.dp)
+            )
+            Text(
+                text = question.marks,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+        }
 
-        previewSubItems(question)?.let { items ->
-            Column(modifier = Modifier.padding(top = 6.dp, start = 16.dp)) {
-                items.forEachIndexed { i, text ->
-                    Text(
-                        text = "${ordinalLabel(i)}) $text",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Black.copy(alpha = 0.85f),
-                        modifier = Modifier.padding(bottom = 3.dp)
-                    )
+        if (question is SavedQuestion.WordList) {
+            // শব্দার্থ/বাক্য তৈরি/বিপরীত শব্দ — কমা দিয়ে আলাদা করা।
+            val wordsLine = question.words.map { it.word }.filter { it.isNotBlank() }.joinToString(", ")
+            if (wordsLine.isNotBlank()) {
+                Text(
+                    text = wordsLine,
+                    fontSize = 9.sp,
+                    color = Color.Black.copy(alpha = 0.85f),
+                    modifier = Modifier.padding(top = 4.dp, start = 14.dp)
+                )
+            }
+        } else {
+            previewSubItems(question)?.let { items ->
+                Column(modifier = Modifier.padding(top = 4.dp, start = 14.dp)) {
+                    items.forEachIndexed { i, text ->
+                        Text(
+                            text = "${ordinalLabel(i)}) $text",
+                            fontSize = 9.sp,
+                            color = Color.Black.copy(alpha = 0.85f),
+                            modifier = Modifier.padding(bottom = 2.dp)
+                        )
+                    }
                 }
             }
         }
-
-        Text(
-            text = "[মার্ক: ${question.marks}]",
-            style = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.Medium,
-            color = Color.Black.copy(alpha = 0.7f),
-            modifier = Modifier.padding(top = 4.dp)
-        )
     }
 }
 
@@ -246,9 +280,9 @@ private fun previewQuestionText(question: SavedQuestion): String = when (questio
     is SavedQuestion.MathProblem -> question.questionText
 }
 
-/** Sub-list to render under the question text, if the type has one. */
+/** Sub-list to render under the question text, if the type has one (WordList/MathProblem render separately). */
 private fun previewSubItems(question: SavedQuestion): List<String>? = when (question) {
-    is SavedQuestion.WordList -> question.words.map { it.word }.filter { it.isNotBlank() }
+    is SavedQuestion.WordList -> null // rendered separately, comma-joined, above
     is SavedQuestion.FillBlanks -> question.subQuestions
     is SavedQuestion.ShortQuestions -> question.subQuestions
     is SavedQuestion.TrueFalse -> question.statements
@@ -261,22 +295,34 @@ private fun previewSubItems(question: SavedQuestion): List<String>? = when (ques
  * (উপর-নিচে) or inline (পাশাপাশি) problems, based on `question.layout`.
  */
 @Composable
-private fun MathProblemPreviewRow(number: Int, question: SavedQuestion.MathProblem) {
+private fun MathProblemPreviewRow(number: String, question: SavedQuestion.MathProblem) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = "$number. ${question.questionText}",
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = Color.Black
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "$number. ${question.questionText}",
+                fontSize = 10.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.Black,
+                modifier = Modifier.weight(1f).padding(end = 8.dp)
+            )
+            Text(
+                text = question.marks,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+        }
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(6.dp))
 
         question.problems.chunked(2).forEach { rowEntries ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 16.dp),
+                    .padding(bottom = 10.dp),
                 horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceEvenly
             ) {
                 rowEntries.forEach { entry ->
@@ -288,13 +334,6 @@ private fun MathProblemPreviewRow(number: Int, question: SavedQuestion.MathProbl
                 }
             }
         }
-
-        Text(
-            text = "[মার্ক: ${question.marks}]",
-            style = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.Medium,
-            color = Color.Black.copy(alpha = 0.7f)
-        )
     }
 }
 
@@ -302,21 +341,21 @@ private fun MathProblemPreviewRow(number: Int, question: SavedQuestion.MathProbl
 @Composable
 private fun VerticalMathEntry(entry: MathProblemEntry) {
     Column(horizontalAlignment = Alignment.End) {
-        Text(entry.operand1, style = MaterialTheme.typography.titleMedium, color = Color.Black)
+        Text(entry.operand1, fontSize = 11.sp, color = Color.Black)
         Row {
             Text(
                 "${entry.operator} ",
-                style = MaterialTheme.typography.titleMedium,
+                fontSize = 11.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black
             )
-            Text(entry.operand2, style = MaterialTheme.typography.titleMedium, color = Color.Black)
+            Text(entry.operand2, fontSize = 11.sp, color = Color.Black)
         }
         HorizontalDivider(
-            modifier = Modifier.padding(top = 4.dp).width(60.dp),
+            modifier = Modifier.padding(top = 3.dp).width(44.dp),
             color = Color.Black
         )
-        Spacer(modifier = Modifier.height(28.dp)) // answer space
+        Spacer(modifier = Modifier.height(18.dp)) // answer space
     }
 }
 
@@ -325,7 +364,15 @@ private fun VerticalMathEntry(entry: MathProblemEntry) {
 private fun HorizontalMathEntry(entry: MathProblemEntry) {
     Text(
         text = "${entry.operand1} ${entry.operator} ${entry.operand2} = _______",
-        style = MaterialTheme.typography.titleMedium,
+        fontSize = 11.sp,
         color = Color.Black
     )
+}
+
+private val banglaDigits = charArrayOf('০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯')
+
+/** "1, 2, 3..." for other subjects; "১, ২, ৩..." for বাংলা. */
+private fun formatQuestionNumber(number: Int, subjectName: String): String {
+    if (subjectName != "বাংলা") return number.toString()
+    return number.toString().map { ch -> if (ch.isDigit()) banglaDigits[ch - '0'] else ch }.joinToString("")
 }
