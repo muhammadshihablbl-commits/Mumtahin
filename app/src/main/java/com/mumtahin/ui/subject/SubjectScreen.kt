@@ -2,6 +2,7 @@ package com.mumtahin.ui.subject
 
 import com.mumtahin.data.ExamInfo
 import com.mumtahin.data.SavedQuestion
+import com.mumtahin.ui.components.StatusBarColor
 import com.mumtahin.ui.preview.QuestionPreviewScreen
 
 import androidx.activity.compose.BackHandler
@@ -88,6 +89,11 @@ fun SubjectScreen(
     val savedQuestions = uiState.savedQuestions
     val examInfo = uiState.examInfo
     val examInfoExpanded = uiState.examInfoExpanded
+
+    // Same color as this screen's TopAppBar (both the edit-mode one below
+    // and QuestionPreviewScreen's) — covers both since this composable
+    // stays mounted across the isPreviewMode toggle.
+    StatusBarColor(MaterialTheme.colorScheme.primary)
 
     var activeSheet by remember { mutableStateOf<ActiveSheet?>(null) }
     var isPreviewMode by remember { mutableStateOf(false) }

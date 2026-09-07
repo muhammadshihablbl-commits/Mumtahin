@@ -35,8 +35,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.unit.sp
 import com.mumtahin.R
+import com.mumtahin.ui.components.StatusBarColor
 
 data class SubjectItem(
     val id: String,
@@ -50,6 +52,11 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     onSubjectClick: (SubjectItem) -> Unit
 ) {
+    // Dark status-bar icons on a light background, light icons on a dark
+    // background — matches whichever mode MaterialTheme.colorScheme.background
+    // currently is (light theme vs. dark theme).
+    StatusBarColor(MaterialTheme.colorScheme.background, darkIcons = !isSystemInDarkTheme())
+
     val subjects = listOf(
         SubjectItem("bangla", "বাংলা", R.drawable.ic_bangla),
         SubjectItem("english", "ইংরেজি", R.drawable.ic_english),
