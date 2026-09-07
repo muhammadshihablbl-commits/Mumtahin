@@ -1,18 +1,23 @@
-package com.mumtahin.ui.screens
+package com.mumtahin.data
+
+import kotlinx.serialization.Serializable
 
 /** One word inside a শব্দার্থ / বাক্য তৈরি / বিপরীত শব্দ question. */
+@Serializable
 internal data class WordItem(
     val id: Long,
     val word: String
 )
 
 /** Layout style for a set of গাণিতিক সমস্যা math problems. */
+@Serializable
 internal enum class MathLayout {
     VERTICAL,   // উপর-নিচে (কলাম ফর্ম)
     HORIZONTAL  // পাশাপাশি (ইনলাইন)
 }
 
 /** One "operand1 operator operand2" math problem. */
+@Serializable
 internal data class MathProblemEntry(
     val operand1: String,
     val operator: String, // "+", "−", "×", "÷"
@@ -34,12 +39,19 @@ internal fun ordinalLabel(index: Int): String =
  * A saved question of any supported type. Add a new data class here for
  * each new question type — SavedQuestionCard and SubjectScreen's `when`
  * blocks are the only other places that need a matching new branch.
+ *
+ * `@Serializable`: this whole hierarchy is persisted to disk as JSON via
+ * SubjectRepository, so every new subtype added here must stay
+ * serializable (plain data classes / enums / lists of those — no
+ * Composable state, no Context, nothing UI-only).
  */
+@Serializable
 internal sealed class SavedQuestion {
     abstract val id: Long
     abstract val marks: String
 
     /** One question + a single (usually long) answer — কবিতা and প্রশ্ন share this. */
+    @Serializable
     data class SingleQuestion(
         override val id: Long,
         val typeTitle: String,
@@ -47,6 +59,7 @@ internal sealed class SavedQuestion {
         override val marks: String
     ) : SavedQuestion()
 
+    @Serializable
     data class WordList(
         override val id: Long,
         val typeTitle: String,
@@ -55,6 +68,7 @@ internal sealed class SavedQuestion {
         override val marks: String
     ) : SavedQuestion()
 
+    @Serializable
     data class FillBlanks(
         override val id: Long,
         val questionText: String,
@@ -63,20 +77,23 @@ internal sealed class SavedQuestion {
     ) : SavedQuestion()
 
     /** A main question plus a growing list of ক)/খ)... short-answer sub-questions. */
+    @Serializable
     data class ShortQuestions(
         override val id: Long,
         val questionText: String,
         val subQuestions: List<String>,
         override val marks: String
     ) : SavedQuestion()
-    
+
+    @Serializable
     data class TrueFalse(
         override val id: Long,
         val questionText: String,
         val statements: List<String>,
         override val marks: String
     ) : SavedQuestion()
-    
+
+    @Serializable
     data class MathProblem(
         override val id: Long,
         val questionText: String,

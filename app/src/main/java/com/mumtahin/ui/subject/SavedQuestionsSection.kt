@@ -1,4 +1,6 @@
-package com.mumtahin.ui.screens
+package com.mumtahin.ui.subject
+
+import com.mumtahin.data.SavedQuestion
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

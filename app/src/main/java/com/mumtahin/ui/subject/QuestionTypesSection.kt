@@ -1,4 +1,4 @@
-package com.mumtahin.ui.screens
+package com.mumtahin.ui.subject
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.BorderStroke

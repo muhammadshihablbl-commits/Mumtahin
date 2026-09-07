@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 android {
@@ -53,4 +54,9 @@ dependencies {
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    
+    implementation("androidx.datastore:datastore-preferences:1.1.1")           // persistence
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")   // JSON serialize
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")         // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")     // viewModel() composable
 }

@@ -1,4 +1,4 @@
-package com.mumtahin.ui.screens
+package com.mumtahin.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

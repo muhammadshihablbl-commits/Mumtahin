@@ -23,9 +23,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.mumtahin.ui.screens.HomeScreen
+import com.mumtahin.ui.home.HomeScreen
 import com.mumtahin.ui.screens.SettingsScreen
-import com.mumtahin.ui.screens.SubjectScreen
+import com.mumtahin.ui.subject.SubjectScreen
 import com.mumtahin.ui.theme.MumtahinTheme
 
 class MainActivity : ComponentActivity() {
@@ -106,7 +106,9 @@ fun MumtahinApp() {
                     currentScreen = AppScreen.Subject(subjectItem.title)
                 }
             )
-            AppScreen.Settings -> SettingsScreen(modifier = Modifier.padding(innerPadding))
+            AppScreen.Settings -> SettingsScreen(
+                modifier = Modifier.padding(innerPadding)
+            )
             is AppScreen.Subject -> SubjectScreen(
                 subjectName = screen.name,
                 onBackClick = { currentScreen = AppScreen.Home },

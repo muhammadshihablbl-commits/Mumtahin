@@ -1,4 +1,11 @@
-package com.mumtahin.ui.screens
+package com.mumtahin.ui.preview
+
+import com.mumtahin.data.ExamInfo
+import com.mumtahin.data.HeaderOrder
+import com.mumtahin.data.MathLayout
+import com.mumtahin.data.MathProblemEntry
+import com.mumtahin.data.SavedQuestion
+import com.mumtahin.data.ordinalLabel
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +36,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -56,33 +67,58 @@ internal fun QuestionPreviewScreen(
     onEditClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // UI-only demo state for the formatting bar — purely visual (which
+    // button looks "active") until a real rich-text editor is wired in.
+    // A future integration should replace these with the editor's actual
+    // selection state instead of local remember.
+    var isBoldActive by remember { mutableStateOf(false) }
+    var isItalicActive by remember { mutableStateOf(false) }
+    var currentAlignment by remember { mutableStateOf(RichTextAlign.LEFT) }
+
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = { Text("$subjectName — প্রিভিউ") },
-                navigationIcon = {
-                    IconButton(onClick = onEditClick) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = onEditClick) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_edit),
-                            contentDescription = "Edit"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+            Column {
+                TopAppBar(
+                    title = { Text("$subjectName — প্রিভিউ") },
+                    navigationIcon = {
+                        IconButton(onClick = onEditClick) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back"
+                            )
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = onEditClick) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_edit),
+                                contentDescription = "Edit"
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    )
                 )
-            )
+
+                // UI-only rich-text formatting bar — see RichTextToolbar.kt
+                // for the "plug a real editor in later" contract.
+                RichTextToolbar(
+                    isBoldActive = isBoldActive,
+                    isItalicActive = isItalicActive,
+                    currentAlignment = currentAlignment,
+                    onBoldClick = { isBoldActive = !isBoldActive },
+                    onItalicClick = { isItalicActive = !isItalicActive },
+                    onAlignClick = { currentAlignment = it }
+                    // onIncreaseFontSizeClick / onDecreaseFontSizeClick /
+                    // onIncreaseIndentClick / onDecreaseIndentClick /
+                    // onInsertTableClick left as no-ops for now — wire
+                    // these up once there's real content to format.
+                )
+            }
         }
     ) { innerPadding ->
         // Neutral backdrop (like a document editor canvas) so the white

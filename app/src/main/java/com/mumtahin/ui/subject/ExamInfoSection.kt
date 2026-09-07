@@ -1,4 +1,4 @@
-package com.mumtahin.ui.screens
+package com.mumtahin.ui.subject
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
@@ -32,23 +32,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-
-/** Which name shows first on the A4 preview page header. */
-internal enum class HeaderOrder {
-    EXAM_FIRST,     // পরীক্ষার নাম আগে
-    MADRASA_FIRST   // মাদ্রাসার নাম আগে
-}
-
-/** All the fields shown/edited in this card — hoisted so Preview can read them too. */
-internal data class ExamInfo(
-    val examName: String = "",
-    val madrasaName: String = "",
-    val subject: String = "",
-    val className: String = "",
-    val duration: String = "",
-    val fullMarks: String = "",
-    val headerOrder: HeaderOrder = HeaderOrder.EXAM_FIRST
-)
+import com.mumtahin.data.ExamInfo
+import com.mumtahin.data.HeaderOrder
+import com.mumtahin.ui.components.AppTextField
 
 @Composable
 internal fun ExamInfoSection(

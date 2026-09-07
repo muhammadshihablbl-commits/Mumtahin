@@ -1,4 +1,8 @@
-package com.mumtahin.ui.screens
+package com.mumtahin.ui.subject
+
+import com.mumtahin.data.SavedQuestion
+import com.mumtahin.data.WordItem
+import com.mumtahin.ui.components.AppTextField
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
@@ -22,7 +26,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,46 +54,41 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
-/** One "ক) ..." short-answer sub-question. */
-private data class ShortSubQuestion(
-    val id: Long,
-    val text: String
-)
-
 /**
  * MD3 EXPRESSIVE VERSION
  *
- * Bottom sheet opened from the "সংক্ষিপ্ত প্রশ্ন" question-type card. Same
- * ক)/খ)/গ)... growing sub-question list as শূন্যস্থান, but a plain answer
- * field — no built-in blank inserter here.
+ * Bottom sheet shared by "শব্দার্থ", "বাক্য তৈরি" and "বিপরীত শব্দ" — any
+ * question that's a title + a growing list of single-word entries + marks.
+ * `typeTitle` picks the sheet's heading, icon, and question-field hint.
  *
  * Uses stable Material3 APIs only — no ExperimentalMaterial3ExpressiveApi
  * opt-in needed.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ShortQuestionsBottomSheet(
-    subjectName: String,
-    initialQuestion: SavedQuestion.ShortQuestions?,
+internal fun WordListBottomSheet(
+    typeTitle: String,
+    initialQuestion: SavedQuestion.WordList?,
     onDismiss: () -> Unit,
-    onSave: (questionText: String, subQuestions: List<String>, marks: String) -> Unit
+    onSave: (questionText: String, words: List<WordItem>, marks: String) -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
     var questionText by remember { mutableStateOf(initialQuestion?.questionText ?: "") }
     var marks by remember { mutableStateOf(initialQuestion?.marks ?: "") }
-    var subQuestions by remember {
+    var words by remember {
         mutableStateOf(
-            (initialQuestion?.subQuestions?.takeIf { it.isNotEmpty() } ?: listOf(""))
-                .mapIndexed { index, text -> ShortSubQuestion(id = index.toLong(), text = text) }
+            initialQuestion?.words ?: listOf(WordItem(id = 0L, word = ""))
         )
     }
-    var nextId by remember { mutableStateOf((subQuestions.maxOfOrNull { it.id } ?: 0L) + 1) }
+    var nextWordId by remember { mutableStateOf((words.maxOfOrNull { it.id } ?: 0L) + 1) }
 
+    // Auto-focus a freshly added word field.
     val focusRequesters = remember { mutableStateMapOf<Long, FocusRequester>() }
     var newlyAddedId by remember { mutableStateOf<Long?>(null) }
 
@@ -117,7 +118,7 @@ internal fun ShortQuestionsBottomSheet(
                 .imePadding()
                 .padding(bottom = 24.dp)
         ) {
-            ShortQuestionsHeroHeader(isEditing = initialQuestion != null)
+            WordListHeroHeader(typeTitle = typeTitle, isEditing = initialQuestion != null)
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -125,44 +126,61 @@ internal fun ShortQuestionsBottomSheet(
                 label = "প্রশ্ন",
                 value = questionText,
                 onValueChange = { questionText = it },
-                placeholder = "যেমন: নিচের প্রশ্নগুলোর উত্তর দাও"
+                placeholder = when (typeTitle) {
+                    "শব্দার্থ" -> "যেমন: শব্দার্থ লেখ। যেকোনো ১২টি:"
+                    "বাক্য তৈরি" -> "যেমন: নিচের শব্দগুলো দিয়ে বাক্য তৈরি কর:"
+                    "বিপরীত শব্দ" -> "যেমন: বিপরীত শব্দ লেখো:"
+                    else -> "প্রশ্ন লিখুন"
+                }
             )
 
             Text(
-                text = "সংক্ষিপ্ত প্রশ্নসমূহ",
+                text = "শব্দসমূহ",
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(bottom = 10.dp, top = 4.dp)
             )
 
-            val subQuestionPlaceholder = if (subjectName == "অংক") "যেমন: ৭ × ৮ = কত?" else "যেমন: তোমার রব কে?"
+            words.chunked(2).forEach { rowWords ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    rowWords.forEach { wordItem ->
+                        val focusRequester = focusRequesters.getOrPut(wordItem.id) { FocusRequester() }
 
-            subQuestions.forEachIndexed { index, item ->
-                val focusRequester = focusRequesters.getOrPut(item.id) { FocusRequester() }
-                ShortSubQuestionRow(
-                    label = ordinalLabel(index),
-                    value = item.text,
-                    placeholder = subQuestionPlaceholder,
-                    canRemove = subQuestions.size > 1,
-                    focusRequester = focusRequester,
-                    onValueChange = { newText ->
-                        subQuestions = subQuestions.map {
-                            if (it.id == item.id) it.copy(text = newText) else it
-                        }
-                    },
-                    onRemove = {
-                        subQuestions = subQuestions.filterNot { it.id == item.id }
-                        focusRequesters.remove(item.id)
+                        WordItemField(
+                            wordItem = wordItem,
+                            canRemove = words.size > 1,
+                            focusRequester = focusRequester,
+                            onWordChange = { newWord ->
+                                words = words.map {
+                                    if (it.id == wordItem.id) it.copy(word = newWord) else it
+                                }
+                            },
+                            onRemove = {
+                                words = words.filterNot { it.id == wordItem.id }
+                                focusRequesters.remove(wordItem.id)
+                            },
+                            modifier = Modifier.weight(1f)
+                        )
                     }
-                )
+                    if (rowWords.size == 1) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
             }
 
+            // Expressive: pill-shaped outlined button instead of a flat
+            // rectangular one, matching ExamInfoSection's pill convention.
             OutlinedButton(
                 onClick = {
-                    val newId = nextId
-                    subQuestions = subQuestions + ShortSubQuestion(id = newId, text = "")
-                    nextId += 1
+                    val newId = nextWordId
+                    words = words + WordItem(id = newId, word = "")
+                    nextWordId += 1
                     newlyAddedId = newId
                 },
                 modifier = Modifier
@@ -170,24 +188,24 @@ internal fun ShortQuestionsBottomSheet(
                     .padding(vertical = 8.dp),
                 shape = CircleShape
             ) {
-                Text("+ আরও প্রশ্ন যোগ করুন", fontWeight = FontWeight.SemiBold)
+                Text("+ আরও শব্দ যোগ করুন", fontWeight = FontWeight.SemiBold)
             }
 
             AppTextField(
                 label = "মার্ক",
                 value = marks,
                 onValueChange = { marks = it },
-                placeholder = "যেমন: ১০"
+                placeholder = "যেমন: ১২"
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            ShortQuestionsSaveButton(
+            WordListSaveButton(
                 enabled = questionText.isNotBlank(),
                 onClick = {
                     dismissSheet {
-                        val nonEmpty = subQuestions.map { it.text }.filter { it.isNotBlank() }
-                        onSave(questionText, nonEmpty, marks)
+                        val nonEmptyWords = words.filter { it.word.isNotBlank() }
+                        onSave(questionText, nonEmptyWords, marks)
                     }
                 }
             )
@@ -195,8 +213,15 @@ internal fun ShortQuestionsBottomSheet(
     }
 }
 
+/** Icon badge + heading; the icon changes per word-list type. */
 @Composable
-private fun ShortQuestionsHeroHeader(isEditing: Boolean) {
+private fun WordListHeroHeader(typeTitle: String, isEditing: Boolean) {
+    val icon: ImageVector = when (typeTitle) {
+        "শব্দার্থ" -> Icons.Filled.Search
+        "বিপরীত শব্দ" -> Icons.Filled.Refresh
+        else -> Icons.Filled.Create
+    }
+
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
@@ -208,7 +233,7 @@ private fun ShortQuestionsHeroHeader(isEditing: Boolean) {
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                imageVector = Icons.Filled.List,
+                imageVector = icon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.size(28.dp)
@@ -219,13 +244,13 @@ private fun ShortQuestionsHeroHeader(isEditing: Boolean) {
 
         Column {
             Text(
-                text = "সংক্ষিপ্ত প্রশ্ন",
+                text = typeTitle,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.ExtraBold,
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = if (isEditing) "প্রশ্ন সম্পাদনা করুন" else "প্রশ্ন ও sub-প্রশ্ন যোগ করুন",
+                text = if (isEditing) "প্রশ্ন সম্পাদনা করুন" else "প্রশ্ন ও শব্দ যোগ করুন",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
             )
@@ -234,73 +259,44 @@ private fun ShortQuestionsHeroHeader(isEditing: Boolean) {
 }
 
 @Composable
-private fun ShortSubQuestionRow(
-    label: String,
-    value: String,
-    placeholder: String,
+private fun WordItemField(
+    wordItem: WordItem,
     canRemove: Boolean,
     focusRequester: FocusRequester,
-    onValueChange: (String) -> Unit,
-    onRemove: () -> Unit
+    onWordChange: (String) -> Unit,
+    onRemove: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 10.dp),
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        // Expressive: circular badge instead of plain "ক)" text.
-        Box(
-            modifier = Modifier
-                .padding(top = 8.dp)
-                .size(32.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.secondaryContainer,
-                    shape = CircleShape
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
-        }
-
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = Modifier
-                .weight(1f)
-                .focusRequester(focusRequester),
-            placeholder = { Text(placeholder) },
-            singleLine = true,
-            shape = RoundedCornerShape(20.dp),
-            trailingIcon = {
-                if (canRemove) {
-                    IconButton(onClick = onRemove) {
-                        Text(
-                            text = "✕",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
+    OutlinedTextField(
+        value = wordItem.word,
+        onValueChange = onWordChange,
+        modifier = modifier.focusRequester(focusRequester),
+        label = { Text("শব্দ") },
+        singleLine = true,
+        // Expressive: rounder corners than MaterialTheme.shapes.medium
+        shape = RoundedCornerShape(20.dp),
+        trailingIcon = {
+            if (canRemove) {
+                IconButton(onClick = onRemove) {
+                    Text(
+                        text = "✕",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
-            },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
-            )
+            }
+        },
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent,
+            unfocusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
         )
-    }
+    )
 }
 
 /** Save button with a bouncy spring-based shape morph on press. */
 @Composable
-private fun ShortQuestionsSaveButton(enabled: Boolean, onClick: () -> Unit) {
+private fun WordListSaveButton(enabled: Boolean, onClick: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
@@ -310,7 +306,7 @@ private fun ShortQuestionsSaveButton(enabled: Boolean, onClick: () -> Unit) {
             dampingRatio = Spring.DampingRatioMediumBouncy,
             stiffness = Spring.StiffnessMedium
         ),
-        label = "shortQuestionsSaveButtonShapeMorph"
+        label = "wordListSaveButtonShapeMorph"
     )
 
     Button(

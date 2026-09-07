@@ -1,4 +1,4 @@
-package com.mumtahin.ui.screens
+package com.mumtahin.ui.home
 
 import android.widget.Toast
 import androidx.compose.foundation.background
