@@ -44,7 +44,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -167,9 +170,11 @@ private fun A4PageCanvas(
         ) {
             PageHeader(examInfo = examInfo)
 
-            Spacer(modifier = Modifier.height(10.dp))
+            // গ্যাপ ৪: exam info (উপরের অংশ) ও নিচের ডিভাইডার লাইনের মাঝের ফাঁক
+            Spacer(modifier = Modifier.height(EXAM_INFO_LINE_GAP * 5))
             HorizontalDivider(color = Color.Black.copy(alpha = 0.4f))
-            Spacer(modifier = Modifier.height(10.dp))
+            // গ্যাপ ৫: ডিভাইডার ও প্রথম প্রশ্নের মাঝের ফাঁক
+            Spacer(modifier = Modifier.height(EXAM_INFO_LINE_GAP * 5))
 
             if (savedQuestions.isEmpty()) {
                 Text(
@@ -192,6 +197,28 @@ private fun A4PageCanvas(
     }
 }
 
+/**
+ * সবচেয়ে কাছাকাছি লাইন-স্পেসিং — Android ফন্টের built-in "font padding"
+ * বন্ধ করে দেয় (`includeFontPadding = false`), যেটা শুধু `lineHeight`
+ * সেট করলেও পুরোপুরি যায় না। exam info-র নাম/মেটা লাইনগুলোতে এই
+ * `style` + `lineHeight = fontSize` — দুটো একসাথে দিলে glyph-এর
+ * চারপাশে প্রায় কোনো বাড়তি ফাঁক থাকবে না।
+ */
+private val tightLineHeightTextStyle = TextStyle(
+    lineHeightStyle = LineHeightStyle(
+        alignment = LineHeightStyle.Alignment.Center,
+        trim = LineHeightStyle.Trim.Both
+    ),
+    platformStyle = PlatformTextStyle(includeFontPadding = false)
+)
+
+/**
+ * Exam info (উপরের অংশ)-এর সবগুলো লাইন-গ্যাপ এই একটা মান থেকেই নেয় —
+ * এই একটা নম্বর বদলালে ৫টা গ্যাপই (নাম-নাম, নাম-বিষয়, বিষয়-সময়,
+ * header-ডিভাইডার, ডিভাইডার-প্রশ্ন) একসাথে সমান হারে কম-বেশি হবে।
+ */
+private val EXAM_INFO_LINE_GAP = 0.dp
+
 @Composable
 private fun PageHeader(examInfo: ExamInfo) {
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -205,18 +232,22 @@ private fun PageHeader(examInfo: ExamInfo) {
             if (name.isNotBlank()) {
                 Text(
                     text = name,
+                    style = tightLineHeightTextStyle,
                     fontSize = size,
+                    lineHeight = size, // ফন্টের ডিফল্ট লাইন-হাইট বাদ, fontSize-এর সমান — সবচেয়ে কাছাকাছি স্পেসিং
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 2.dp)
+                        // গ্যাপ ১: পরীক্ষার নাম ও মাদ্রাসার নামের মাঝের ফাঁক
+                        .padding(bottom = EXAM_INFO_LINE_GAP)
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(6.dp))
+        // গ্যাপ ২: নাম দুটোর নিচে, বিষয়/শ্রেণী সারির উপরে ফাঁক
+        Spacer(modifier = Modifier.height(EXAM_INFO_LINE_GAP))
 
         // বিষয় ও শ্রেণী — কাছাকাছি, পুরো জোড়াটা পাতার মাঝখানে
         if (examInfo.subject.isNotBlank() || examInfo.className.isNotBlank()) {
@@ -234,7 +265,8 @@ private fun PageHeader(examInfo: ExamInfo) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 2.dp),
+                    // গ্যাপ ৩: বিষয়/শ্রেণী সারি ও সময়/পূর্ণমান সারির মাঝের ফাঁক
+                    .padding(top = EXAM_INFO_LINE_GAP),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 MetaLine(label = "সময়", value = examInfo.duration)
@@ -252,7 +284,9 @@ private fun MetaLine(label: String, value: String) {
     }
     Text(
         text = "$label: $value",
+        style = tightLineHeightTextStyle,
         fontSize = 9.sp,
+        lineHeight = 9.sp, // ফন্টের ডিফল্ট লাইন-হাইট বাদ দিয়ে fontSize-এর সমান করে সবচেয়ে কাছাকাছি
         color = Color.Black
     )
 }
@@ -266,14 +300,18 @@ private fun PreviewQuestionRow(number: String, question: SavedQuestion) {
         ) {
             Text(
                 text = "$number. ${previewQuestionText(question)}",
+                style = tightLineHeightTextStyle,
                 fontSize = 10.sp,
+                lineHeight = 10.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.Black,
                 modifier = Modifier.weight(1f).padding(end = 8.dp)
             )
             Text(
                 text = question.marks,
+                style = tightLineHeightTextStyle,
                 fontSize = 10.sp,
+                lineHeight = 10.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black
             )
@@ -285,18 +323,23 @@ private fun PreviewQuestionRow(number: String, question: SavedQuestion) {
             if (wordsLine.isNotBlank()) {
                 Text(
                     text = wordsLine,
+                    style = tightLineHeightTextStyle,
                     fontSize = 9.sp,
+                    lineHeight = 9.sp,
                     color = Color.Black.copy(alpha = 0.85f),
-                    modifier = Modifier.padding(top = 4.dp, start = 14.dp)
+                    // এই top প্যাডিং কমালে/বাড়ালে মূল প্রশ্ন ও শব্দ-তালিকার মাঝের ফাঁক বদলাবে
+                    modifier = Modifier.padding(top = 2.dp, start = 14.dp)
                 )
             }
         } else {
             previewSubItems(question)?.let { items ->
-                Column(modifier = Modifier.padding(top = 4.dp, start = 14.dp)) {
+                Column(modifier = Modifier.padding(top = 2.dp, start = 14.dp)) {
                     items.forEachIndexed { i, text ->
                         Text(
                             text = "${ordinalLabel(i)}) $text",
+                            style = tightLineHeightTextStyle,
                             fontSize = 9.sp,
+                            lineHeight = 9.sp,
                             color = Color.Black.copy(alpha = 0.85f),
                             modifier = Modifier.padding(bottom = 2.dp)
                         )
@@ -339,14 +382,18 @@ private fun MathProblemPreviewRow(number: String, question: SavedQuestion.MathPr
         ) {
             Text(
                 text = "$number. ${question.questionText}",
+                style = tightLineHeightTextStyle,
                 fontSize = 10.sp,
+                lineHeight = 10.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = Color.Black,
                 modifier = Modifier.weight(1f).padding(end = 8.dp)
             )
             Text(
                 text = question.marks,
+                style = tightLineHeightTextStyle,
                 fontSize = 10.sp,
+                lineHeight = 10.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black
             )
